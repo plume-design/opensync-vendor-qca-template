@@ -1,0 +1,46 @@
+#!/bin/sh /etc/rc.common
+# {# jinja-parse #}
+INSTALL_PREFIX={{INSTALL_PREFIX}}
+
+START=15
+
+SERVICE_DAEMONIZE=1
+SERVICE_WRITE_PID=1
+SERVICE_USE_PID=1
+
+NAME=openvswitch
+PIDCOUNT=0
+
+
+start()
+{
+    [ -x /var/run/openvswitch ] || mkdir -p /var/run/openvswitch
+
+    # create a ramdisk folder for non-persistent OVSDB database
+    [ -x /tmp/etc/openvswitch ] || mkdir -p /tmp/etc/openvswitch
+
+    # copy the pre-populated conf.db to ramdisk
+    cp ${INSTALL_PREFIX}/etc/conf.db.bck /tmp/etc/openvswitch/conf.db
+
+    # ovsdb-server start against non-persistent DB
+    service_start /usr/sbin/ovsdb-server \
+        --remote=punix:/var/run/db.sock \
+        --remote=db:Open_vSwitch,Open_vSwitch,manager_options \
+        --private-key=db:Open_vSwitch,SSL,private_key \
+        --certificate=db:Open_vSwitch,SSL,certificate \
+        --ca-cert=db:Open_vSwitch,SSL,ca_cert \
+        --pidfile=/var/run/ovsdb-server.pid \
+        /tmp/etc/openvswitch/conf.db
+
+    # ovs-vswitchd
+    service_start /usr/sbin/ovs-vswitchd --pidfile=/var/run/ovs-vswitchd.pid
+}
+
+stop()
+{
+    # ovsdb-server
+    service_stop /usr/sbin/ovsdb-server
+
+    # ovs-vswitchd
+    service_stop /usr/sbin/ovs-vswitchd
+}

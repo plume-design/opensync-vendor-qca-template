@@ -42,5 +42,7 @@ RUN eval $INSTALL libpcap-dev
 # Install kconfiglib required for menuconfig
 RUN pip3 install kconfiglib
 
+RUN pip3 install Jinja2
+
 # default cmd
 CMD bash -i

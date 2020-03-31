@@ -1,0 +1,14 @@
+#!/bin/sh /etc/rc.common
+# {# jinja-parse #}
+#
+# OpenSync reference board specifics
+#
+
+INSTALL_PREFIX={{INSTALL_PREFIX}}
+
+START=99
+
+start()
+{
+    ${INSTALL_PREFIX}/tools/bootconfig --write boot_log | logger -t BCRESET
+}

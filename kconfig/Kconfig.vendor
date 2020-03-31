@@ -1,0 +1,14 @@
+menuconfig VENDOR_IS_QCA_TEMPLATE
+    bool "QCA template"
+    help
+        OpenSync template vendor layer for QCA devices.
+
+if VENDOR_IS_QCA_TEMPLATE
+
+config PLUME_HARDWARE
+    bool "Plume hardware"
+    default n
+    help
+        Select 'y' when building OpenSync for Plume hardware.
+
+endif

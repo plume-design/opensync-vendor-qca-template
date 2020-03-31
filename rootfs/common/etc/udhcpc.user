@@ -1,6 +1,8 @@
 #!/bin/sh
+# {# jinja-parse #}
+INSTALL_PREFIX={{INSTALL_PREFIX}}
 
-. /usr/plume/bin/dns_sub.sh
+. ${INSTALL_PREFIX}/bin/dns_sub.sh
 
 ssh_outbound_on_debug ()
 {

@@ -1,4 +1,6 @@
 #!/bin/sh /etc/rc.common
+# {# jinja-parse #}
+INSTALL_PREFIX={{INSTALL_PREFIX}}
 
 START=50
 
@@ -22,7 +24,7 @@ start()
         # Bring-up interfaces
         ifconfig $IF up
         ifconfig $VIF up
-        start-stop-daemon -S -x /sbin/udhcpc -p $SERVICE_PID_FILE -b -m -- -s /usr/plume/bin/udhcpc.sh -f -S -i $VIF -C -o -O subnet
+        start-stop-daemon -S -x /sbin/udhcpc -p $SERVICE_PID_FILE -b -m -- -s ${INSTALL_PREFIX}/bin/udhcpc.sh -f -S -i $VIF -C -o -O subnet
     done
 }
 

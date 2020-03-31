@@ -4,21 +4,31 @@ OpenSync QCA Template
 Reference/template QCA vendor layer implementation provides support for reference
 QCA based targets.
 
-This vendor layer provides two example target implementations based on the same
-reference hardware (described below):
-* `OS_GATEWAY_QCA53` - gateway mode only
-* `OS_EXTENDER_QCA53` - gateway and extender mode
+This vendor layer provides two example target implementations based on the
+reference hardware (described below), as well as example targets for several
+reference boards:
+* `OS_GATEWAY_QCA53` - gateway mode only (Plume hardware)
+* `OS_EXTENDER_QCA53` - gateway and extender mode (Plume hardware)
+* `HAWKEYE` - gateway and extender mode (QCA reference board)
+* [Work in progress] `ACRONITE` - gateway and extender mode (QCA reference board)
+* [Work in progress] `DAKOTA` - gateway and extender mode (QCA reference board)
+
+Note that this README file mainly describes `OS_GATEWAY_QCA53` and
+`OS_EXTENDER_QCA53` targets, but some information also applies to QCA
+reference board targets.
 
 #### Reference software versions
 
 * Components and versions:
 
-    | Component                    | Version |         |
-    |------------------------------|---------|---------|
-    | OpenSync core                | 1.4.1   | public  |
-    | OpenSync vendor/qca-template | 1.4.1   | public  |
-    | OpenSync platform/qca        | 1.4.1   | public  |
-    | Qualcomm SDK                 | 5.3     | private |
+    | Component                    | Version     |         |
+    |------------------------------|-------------|---------|
+    | OpenSync core                | 2.0.0       | public  |
+    | OpenSync vendor/qca-template | 2.0.0       | public  |
+    | OpenSync platform/qca        | 2.0.0       | public  |
+    | Qualcomm SDK                 | 5.3 or 11.0 | private |
+
+Note that Plume hardware based targets use Qualcomm SDK 5.3.
 
 #### Plume reference device information
 
@@ -86,6 +96,8 @@ OPENSYNC_ROOT
 │   └── work
 ├── platform
 │   └── qca
+├── service-provider
+│   └── ...
 └── vendor
     └── qca-template
 ```
@@ -267,20 +279,20 @@ Non-OpenSync system configs and scripts:
 ./rootfs/common/etc/config/system
 ./rootfs/common/etc/config/wireless
 ./rootfs/common/etc/config/network
-./rootfs/common/usr/plume/bin/watchdog-kick.sh
-./rootfs/common/usr/plume/bin/fan.sh
+./rootfs/kconfig/PLUME_HARDWARE/INSTALL_PREFIX/bin/watchdog-kick.sh
+./rootfs/kconfig/PLUME_HARDWARE/INSTALL_PREFIX/bin/fan.sh
 ```
 
 Non-OpenSync service startup scripts:
 
 ```
-./rootfs/common/etc/init.d/bcreset
 ./rootfs/common/etc/init.d/syslog
-./rootfs/common/etc/init.d/fan
 ./rootfs/common/etc/init.d/dropbear
 ./rootfs/common/etc/init.d/watchdog
 ./rootfs/common/etc/init.d/firewall
 ./rootfs/common/etc/init.d/debugnet
+./rootfs/kconfig/PLUME_HARDWARE/etc/init.d/fan
+./rootfs/kconfig/PLUME_HARDWARE/etc/init.d/bcreset
 ```
 
 Non-OpenSync reference image related files:
@@ -294,15 +306,11 @@ Non-OpenSync reference image related files:
 ./tools/uboot-beacon-firmware.bin
 ./tools/gen_bootcfg.py
 ./tools/jenkins-pack.sh
-./rootfs/common/lib/firmware/IPQ4019
-./rootfs/common/lib/firmware/IPQ4019/hw.1
-./rootfs/common/lib/firmware/IPQ4019/hw.1/boarddata_0.bin
-./rootfs/common/lib/firmware/IPQ4019/hw.1/boarddata_1.bin
-./rootfs/common/lib/firmware/QCA9984
-./rootfs/common/lib/firmware/QCA9984/hw.1
-./rootfs/common/lib/firmware/QCA9984/hw.1/boarddata_2.bin
-./rootfs/common/usr/plume/tools/bootconfig
-./rootfs/common/usr/plume/tools/safeupdate
+./rootfs/kconfig/PLUME_HARDWARE/lib/firmware/IPQ4019/hw.1/boarddata_0.bin
+./rootfs/kconfig/PLUME_HARDWARE/lib/firmware/IPQ4019/hw.1/boarddata_1.bin
+./rootfs/kconfig/PLUME_HARDWARE/lib/firmware/QCA9984/hw.1/boarddata_2.bin
+./rootfs/kconfig/PLUME_HARDWARE/INSTALL_PREFIX/tools/bootconfig
+./rootfs/kconfig/PLUME_HARDWARE/INSTALL_PERFIX/tools/safeupdate
 ```
 
 

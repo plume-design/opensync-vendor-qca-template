@@ -30,13 +30,11 @@ static ovsdb_table_t table_Wifi_Test_State;
  * Private
  */
 
-#define CMD_DELAYED_REBOOT  "/usr/plume/scripts/delayed-reboot"
-
 static bool cmd_delayed_reboot(const char *delay)
 {
     char cmd[512];
 
-    snprintf(cmd, sizeof(cmd), "/usr/plume/scripts/delayed-reboot %s", delay);
+    snprintf(cmd, sizeof(cmd), CONFIG_INSTALL_PREFIX"/scripts/delayed-reboot %s", delay);
 
     if (fork() == 0)
     {

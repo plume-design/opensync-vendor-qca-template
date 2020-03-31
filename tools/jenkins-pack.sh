@@ -93,7 +93,7 @@ pack_app_artifacts()
     echo "# Packing application artifacts"
 
     tar czvf ${name} \
-        ${path}rootfs/usr/plume/lib/libplume.so \
+        ${path}rootfs/usr/opensync/lib/libopensync.so \
         ${path}obj/src.lib.schema/schema_pre.h \
         ${path}obj/src.lib.schema/schema_gen.h
 }

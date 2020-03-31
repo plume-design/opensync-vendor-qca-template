@@ -1,7 +1,10 @@
 #!/bin/sh
+# {# jinja-parse #}
+INSTALL_PREFIX={{INSTALL_PREFIX}}
+
 [ -f /etc/banner ] && cat /etc/banner
 
-export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/plume/tools:/opt/bin:/opt/sbin
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin:${INSTALL_PREFIX}/tools:/opt/bin:/opt/sbin
 export HOME=$(grep -e "^${USER:-root}:" /etc/passwd | cut -d ":" -f 6)
 export HOME=${HOME:-/root}
 export PS1='\u@\h:\w\$ '

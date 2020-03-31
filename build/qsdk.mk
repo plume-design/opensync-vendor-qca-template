@@ -19,6 +19,9 @@ LIB_DIR        = $(STAGING_DIR)/lib
 SDK_INCLUDES  += -I$(TARGET_DIR)/include
 SDK_INCLUDES  += -I$(TARGET_DIR)/usr/include
 SDK_INCLUDES  += -I$(TARGET_DIR)/usr/include/protobuf-c
+ifeq ($(CONFIG_PLATFORM_QCA_QSDK110),y)
+SDK_INCLUDES  += -I$(TARGET_DIR)/usr/include/libnl3
+endif
 SDK_INCLUDES  += -I$(TOOLCHAIN_DIR)/include
 SDK_INCLUDES  += -I$(TOOLCHAIN_DIR)/usr/include
 
@@ -45,3 +48,14 @@ export LIBS
 
 WRT_DEFINES      += -DUSE_IOCTL_DEV
 # Needed for offloading stats
+ifneq ($(filter HAWKEYE AKRONITE DAKOTA,$(TARGET)),)
+QCA_WIFI_VARIANT = unified-profile
+QCA_WIFI_SRC_DIR = $(SDK_DIR)/qca/src/qca-wifi
+QCA_WIFI_REV = $(shell cd $(QCA_WIFI_SRC_DIR) && git describe --dirty --long --always | sed 's/.*-g//g')
+QCA_WIFI_BUILD_DIR = $(shell ls -d $(SDK_DIR)/build_dir/$(TARGET_DIR_NAME)/linux-ipq_ipq807x/qca-wifi-g$(QCA_WIFI_REV)-$(QCA_WIFI_VARIANT)/*/ 2>/dev/null | sed 1q)
+
+ifneq ($(QCA_WIFI_BUILD_DIR)x,x)
+WLAN_INCLUDES += -I$(QCA_WIFI_BUILD_DIR)/offload/os/linux/include
+WLAN_INCLUDES += -I$(QCA_WIFI_BUILD_DIR)/include
+endif
+endif

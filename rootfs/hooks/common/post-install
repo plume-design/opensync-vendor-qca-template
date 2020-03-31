@@ -31,7 +31,9 @@ echo "###### post-install ${ROOTFS} #######"
 # OpenSync
 #
 
-ln -sf usr/plume/.version        ${ROOTFS}/.version
+# remove leading slash with sed as ${INSTALL_PREFIX:1} isn't working
+INSTALL_PREFIX_NO_LEADING_SLASH=`echo $INSTALL_PREFIX | sed 's/^\///'`
+ln -sf ${INSTALL_PREFIX_NO_LEADING_SLASH}/.version ${ROOTFS}/.version
 
 # Note that QSDK already takes care of /etc/rc.d.
 #ln -sf ../init.d/opensync ${ROOTFS}/etc/rc.d/S99opensync

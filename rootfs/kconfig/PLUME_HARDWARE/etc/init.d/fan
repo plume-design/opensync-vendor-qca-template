@@ -1,0 +1,14 @@
+#!/bin/sh /etc/rc.common
+# {# jinja-parse #}
+#
+# OpenSync reference board specifics
+#
+
+INSTALL_PREFIX={{INSTALL_PREFIX}}
+
+START=60
+
+start()
+{
+    ${INSTALL_PREFIX}/bin/fan.sh 5500 | logger -t FAN
+}

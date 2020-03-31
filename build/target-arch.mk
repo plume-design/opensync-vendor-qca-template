@@ -5,7 +5,7 @@
 # which share some portions of code. This template contains two
 # target implementations: OS_GATEWAY_QCA53 and OS_EXTENDER_QCA53.
 #
-QCA_TEMPLATE_TARGETS := OS_GATEWAY_QCA53 OS_EXTENDER_QCA53
+QCA_TEMPLATE_TARGETS := OS_GATEWAY_QCA53 OS_EXTENDER_QCA53 HAWKEYE AKRONITE DAKOTA
 
 OS_TARGETS          += $(QCA_TEMPLATE_TARGETS)
 
@@ -30,6 +30,27 @@ VERSION_TARGET                  = PIRANHA2
 CPU_TYPE                        = arm
 DRIVER_VERSION                  = qca10_2_4_csu3
 SDK                             = qsdk53
+endif
+
+ifneq ($(filter HAWKEYE,$(TARGET)),)
+VERSION_TARGET                  = HAWKEYE
+CPU_TYPE                        = arm
+DRIVER_VERSION                  = qca10_2_4_csu3
+SDK                             = .
+endif
+
+ifneq ($(filter AKRONITE,$(TARGET)),)
+VERSION_TARGET                  = AKRONITE
+CPU_TYPE                        = arm
+DRIVER_VERSION                  = qca10_2_4_csu3
+SDK                             = .
+endif
+
+ifneq ($(filter DAKOTA,$(TARGET)),)
+VERSION_TARGET                  = DAKOTA
+CPU_TYPE                        = arm
+DRIVER_VERSION                  = qca10_2_4_csu3
+SDK                             = .
 endif
 
 endif # QCA_TEMPLATE_TARGETS

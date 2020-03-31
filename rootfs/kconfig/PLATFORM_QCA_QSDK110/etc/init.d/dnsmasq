@@ -1,0 +1,6 @@
+#!/bin/sh /etc/rc.common
+
+#
+# Adding a dummy script, since dnsmasq will be started by OpenSync.
+# It should not be running by default while device bootup.
+#
