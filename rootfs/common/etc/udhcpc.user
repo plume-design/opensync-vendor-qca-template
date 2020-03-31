@@ -1,0 +1,61 @@
+#!/bin/sh
+
+. /usr/plume/bin/dns_sub.sh
+
+ssh_outbound_on_debug ()
+{
+    # Check if this is interface eth0.4
+    [ "$IFNAME" = "eth0.4" ] || return
+}
+
+RESOLV_FILE="/tmp/resolv.conf"
+DNS_TMP="/tmp/dns"
+
+dns_update()
+{
+    #
+    # Apply DNS setting
+    #
+    dns_reset "$interface"
+    for d in $dns
+    do
+        [ "$d" == "0.0.0.0" ] && continue
+        dns_add "$interface" nameserver "$d"
+    done
+
+    for d in $domain
+    do
+        dns_add "$interface" search "$d"
+    done
+
+    dns_apply "$interface"
+}
+
+logger "udhcpc.user: [$interface] args=$@"
+
+[ -n "$router" ]     && logger "udhcpc.user: gateway=$router"
+[ -n "$timesrv" ]    && logger "udhcpc.user: timesrv=$timesrv"
+[ -n "$namesrv" ]    && logger "udhcpc.user: namesrv=$namesrv"
+[ -n "$dns" ]        && logger "udhcpc.user: dns=$dns"
+[ -n "$logsrv" ]     && logger "udhcpc.user: logsrv=$logsrv"
+[ -n "$cookiesrv" ]  && logger "udhcpc.user: cookiesrv=$cookiesrv"
+[ -n "$lprsrv" ]     && logger "udhcpc.user: lprsrv=$lprsrv"
+[ -n "$hostname" ]   && logger "udhcpc.user: hostname=$hostname"
+[ -n "$domain" ]     && logger "udhcpc.user: domain=$domain"
+[ -n "$swapsrv" ]    && logger "udhcpc.user: swapsrv=$swapsrv"
+[ -n "$ntpsrv" ]     && logger "udhcpc.user: ntpsrv=$ntpsrv"
+[ -n "$lease" ]      && logger "udhcpc.user: lease=$lease"
+[ -n "$vendorspec" ] && logger "udhcpc.user: vendorspec=$vendorspec"
+
+case "$1" in
+    bound)
+        ssh_outbound_on_debug
+        dns_update
+        ;;
+    renew)
+        dns_update
+        ;;
+    *)
+        true
+        ;;
+esac

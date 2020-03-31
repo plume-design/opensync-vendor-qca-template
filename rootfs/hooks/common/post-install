@@ -1,0 +1,37 @@
+#!/bin/sh
+
+if [ $# -ne 1 ];
+then
+    echo "Usage: `basename $0` <rootfs-path>"
+    exit 1
+fi
+
+ROOTFS=$1
+
+echo "###### post-install ${ROOTFS} #######"
+
+##
+# System services
+#
+
+# Note that QSDK already takes care of /etc/rc.d.
+#ln -sf ../init.d/watchdog ${ROOTFS}/etc/rc.d/S00watchdog
+#ln -sf ../init.d/boot ${ROOTFS}/etc/rc.d/S10boot
+#ln -sf ../init.d/boot ${ROOTFS}/etc/rc.d/K99boot
+#ln -sf ../init.d/syslog ${ROOTFS}/etc/rc.d/S11syslog
+#ln -sf ../init.d/syslog ${ROOTFS}/etc/rc.d/K99syslog
+#ln -sf ../init.d/htpdate ${ROOTFS}/etc/rc.d/S49htpdate
+#ln -sf ../init.d/debugnet ${ROOTFS}/etc/rc.d/S50debugnet
+#ln -sf ../init.d/dropbear ${ROOTFS}/etc/rc.d/S51dropbear
+#ln -sf ../init.d/firewall ${ROOTFS}/etc/rc.d/S60firewall
+#ln -sf ../init.d/fan ${ROOTFS}/etc/rc.d/S60fan
+#ln -sf ../init.d/bcreset ${ROOTFS}/etc/rc.d/S99bcreset
+
+##
+# OpenSync
+#
+
+ln -sf usr/plume/.version        ${ROOTFS}/.version
+
+# Note that QSDK already takes care of /etc/rc.d.
+#ln -sf ../init.d/opensync ${ROOTFS}/etc/rc.d/S99opensync

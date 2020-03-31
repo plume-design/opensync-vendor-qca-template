@@ -1,0 +1,15 @@
+[
+    "Open_vSwitch",
+    {
+        "op":"insert",
+        "table":"Wifi_Inet_Config",
+        "row": {
+            "if_name": "br-wan",
+            "ip_assign_scheme": "dhcp",
+            "if_type": "bridge",
+            "enabled": true,
+            "network": true,
+            "NAT": true
+        }
+    }
+]

@@ -1,0 +1,40 @@
+#!/bin/sh /etc/rc.common
+
+START=50
+
+SERVICE_PID_FILE="/var/run/udhcpc.pid"
+
+NAME=debugnet
+
+INTERFACES="eth0"
+VLAN=4
+
+start()
+{
+    for IF in $INTERFACES
+    do
+        # Skip non-existing interfaces
+        [ ! -e /sys/class/net/$IF ] && continue
+
+        VIF="${IF}.${VLAN}"
+        [ -d "/sys/class/net/$VIF" ] || vconfig add $IF $VLAN
+
+        # Bring-up interfaces
+        ifconfig $IF up
+        ifconfig $VIF up
+        start-stop-daemon -S -x /sbin/udhcpc -p $SERVICE_PID_FILE -b -m -- -s /usr/plume/bin/udhcpc.sh -f -S -i $VIF -C -o -O subnet
+    done
+}
+
+stop()
+{
+    for IF in $INTERFACES
+    do
+        # Skip non-existing interfaces
+        [ ! -e /sys/class/net/$IF ] && continue
+
+        VIF="${IF}.${VLAN}"
+        start-stop-daemon -K -x /sbin/udhcpc -p $SERVICE_PID_FILE
+        [ -d "/sys/class/net/$VIF" ] && vconfig rem $VIF
+    done
+}

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ $# -ne 1 ];
+then
+    echo "Usage: `basename $0` <rootfs-path>"
+    exit 1
+fi
+
+ROOTFS=$1
+
+echo "###### pre-install ${ROOTFS} #######"

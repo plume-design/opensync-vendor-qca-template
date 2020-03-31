@@ -1,0 +1,55 @@
+#!/bin/sh /etc/rc.common
+
+START=11
+STOP=99
+
+system_fn()
+{
+    local cfg="$1"
+
+    if [ -x /sbin/syslogd ]; then
+        local args log_ip log_size log_port log_type log_file
+        config_get log_ip "$cfg" log_ip
+        config_get log_size "$cfg" log_size 16
+        config_get log_port "$cfg" log_port 514
+        config_get log_type "$cfg" log_type file
+        config_get log_file "$cfg" log_file "/var/log/messages"
+        args="${log_ip:+-L -R ${log_ip}:${log_port}} ${conloglevel:+-l $conloglevel}"
+        if [ "$log_type" = "file" ]; then
+            args="$args -s $log_size -O $log_file -S -b 1"
+        else
+            args="$args -C${log_size}"
+        fi
+        # Before syslogd is started we need to increase UNIX socket queue
+        # length so that we can handle larger message bursts at boot time.
+        sysctl -w net.unix.max_dgram_qlen=256
+        service_start /sbin/syslogd $args
+    fi
+    if [ -x /sbin/klogd ]; then
+        config_get klogconloglevel "$cfg" klogconloglevel
+        args="${klogconloglevel:+-c $klogconloglevel}"
+        service_start /sbin/klogd $args
+
+        [ -z "$klogconloglevel" ] && { echo -1 > /proc/sys/kernel/printk; }
+    fi
+}
+
+start()
+{
+    # Load /etc/config/system
+    config_load system
+    # Read the system section
+    config_foreach system_fn system
+}
+
+stop()
+{
+    service_stop /sbin/klogd
+    service_stop /sbin/syslogd
+}
+
+reload()
+{
+    stop
+    start
+}

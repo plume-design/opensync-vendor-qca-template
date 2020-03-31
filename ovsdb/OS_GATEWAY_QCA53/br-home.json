@@ -1,0 +1,27 @@
+[
+    "Open_vSwitch",
+    {
+        "op":"insert",
+        "table":"Wifi_Inet_Config",
+        "row": {
+            "if_name": "br-home",
+            "if_type": "bridge",
+            "enabled": true,
+            "network": true,
+            "ip_assign_scheme": "static",
+            "inet_addr": "192.168.80.1",
+            "netmask": "255.255.255.0",
+            "broadcast": "192.168.80.255",
+            "dhcpd": [
+                "map",
+                [
+                    ["start", "192.168.80.2"],
+                    ["stop", "192.168.80.254"],
+                    ["lease_time", "12h"],
+                    ["dhcp_option", "3,192.168.80.1;6,192.168.80.1"],
+                    ["force", "false"]
+                ]
+            ]
+        }
+    }
+]

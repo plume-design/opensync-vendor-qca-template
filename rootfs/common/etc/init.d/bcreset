@@ -1,0 +1,11 @@
+#!/bin/sh /etc/rc.common
+#
+# OpenSync reference board specifics
+#
+
+START=99
+
+start()
+{
+    /usr/plume/tools/bootconfig --write boot_log | logger -t BCRESET
+}

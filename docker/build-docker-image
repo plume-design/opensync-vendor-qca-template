@@ -1,0 +1,9 @@
+#!/bin/bash
+
+TAG="opensync-qca-template"
+
+cd $(dirname $0)
+
+echo ============ building docker image: $TAG ============
+
+docker build --tag "$TAG" .
