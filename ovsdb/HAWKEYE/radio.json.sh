@@ -163,8 +163,8 @@ $creds_configs
             "channel_sync": 0,
             "hw_type": "qca8074",
             "hw_config": $(gen_qca8074_config),
-            "ht_mode": "HT80",
-            "hw_mode": "11ac",
+            "ht_mode": "HT160",
+            "hw_mode": "11ax",
             $(gen_thermal_config)
             "tx_chainmask":3,
             "vif_configs": ["set", [
@@ -183,7 +183,7 @@ $creds_configs
             "hw_type": "qca8074",
             "hw_config": $(gen_qca8074_config),
             "ht_mode": "HT40",
-            "hw_mode": "11n",
+            "hw_mode": "11ax",
             $(gen_thermal_config)
             "tx_chainmask":3,
             "vif_configs": ["set", [
@@ -240,8 +240,8 @@ $creds_configs
             "channel_sync": 0,
             "hw_type": "qca9563",
             "hw_config": $(gen_qca9563_config),
-            "ht_mode": "HT80",
-            "hw_mode": "11ac",
+            "ht_mode": "HT160",
+            "hw_mode": "11ax",
             "vif_configs": ["set", [
                 ["named-uuid", "id0"] ] ]
         }
@@ -258,7 +258,7 @@ $creds_configs
             "hw_type": "qca9563",
             "hw_config": $(gen_qca9563_config),
             "ht_mode": "HT40",
-            "hw_mode": "11n",
+            "hw_mode": "11ax",
             "vif_configs": ["set", [
                 ["named-uuid", "id1"] ] ]
         }

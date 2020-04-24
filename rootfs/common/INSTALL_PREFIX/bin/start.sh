@@ -8,7 +8,11 @@ wait_insmod()
     RETRY=90
     while [ ${RETRY} -gt 0 ]
     do
+{% if CONFIG_PLATFORM_QCA_QSDK110 %}
+        [ -e /sys/class/net/wifi0 -a -e /sys/class/net/wifi1 -o -e /sys/class/net/wifi2 ] && return 0
+{% else %}
         [ -e /sys/class/net/wifi0 -a -e /sys/class/net/wifi1 -a -e /sys/class/net/wifi2 ] && return 0
+{% endif %}
         sleep 1
         RETRY=$((RETRY - 1 ))
     done
@@ -41,7 +45,16 @@ mkdir -p /var/run/dnsmasq
 
 # Start openvswitch
 echo -n 'Starting Open vSwitch ...'
+{% if CONFIG_PLATFORM_QCA_QSDK110 %}
+cp ${INSTALL_PREFIX}/etc/conf.db.bck /etc/openvswitch/conf.db
+uci set openvswitch.ovs.disabled=0
+uci set openvswitch.north.disabled=0
+uci set openvswitch.controller.disabled=0
+uci commit
+/etc/init.d/openvswitch restart
+{% else %}
 /etc/init.d/openvswitch start
+{% endif %}
 
 # Add default internal bridge
 sleep 1

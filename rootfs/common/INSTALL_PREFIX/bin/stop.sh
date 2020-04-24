@@ -1,4 +1,5 @@
 #!/bin/sh
+# {# jinja-parse #}
 
 gre_filter()
 {
@@ -81,7 +82,11 @@ for BRIDGE in $(ovs-vsctl list-br); do ovs-vsctl del-br $BRIDGE; echo "Removing 
 echo "openvswitch stop"
 
 # Destroy all wifi interfaces
+{% if CONFIG_PLATFORM_QCA_QSDK110 %}
+for WIFI in $(iwconfig 2>&1 | grep ESSID | cut -d ' ' -f 1); do echo "destroying $WIFI"; cfg80211tool $WIFI dbgLVL 0xf5ffffff; ifconfig $WIFI down; wlanconfig $WIFI destroy; done
+{% else %}
 for WIFI in $(iwconfig 2>&1 | grep ESSID | cut -d ' ' -f 1); do echo "destroying $WIFI"; iwpriv $WIFI dbgLVL 0xf5ffffff; ifconfig $WIFI down; wlanconfig $WIFI destroy; done
+{% endif %}
 
 # Stop DNS service
 for PID in $(pgrep dnsmasq); do echo "kill dns: $(cat /proc/$PID/cmdline)"; kill $PID; done
