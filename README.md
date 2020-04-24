@@ -10,7 +10,7 @@ reference boards:
 * `OS_GATEWAY_QCA53` - gateway mode only (Plume hardware)
 * `OS_EXTENDER_QCA53` - gateway and extender mode (Plume hardware)
 * `HAWKEYE` - gateway and extender mode (QCA reference board)
-* [Work in progress] `ACRONITE` - gateway and extender mode (QCA reference board)
+* [Work in progress] `AKRONITE` - gateway and extender mode (QCA reference board)
 * [Work in progress] `DAKOTA` - gateway and extender mode (QCA reference board)
 
 Note that this README file mainly describes `OS_GATEWAY_QCA53` and
