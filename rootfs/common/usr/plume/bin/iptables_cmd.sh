@@ -292,16 +292,16 @@ upnpd_start()
 
     # Generate the miniupnpd config file
     cat > ${UPNP_DIR}/miniupnpd.conf <<-EOF
-        ext_ifname=${ext_if}
-        listening_ip=${int_if}
-        enable_natpmp=yes
-        enable_upnp=yes
-        secure_mode=yes
-        system_uptime=yes
-        lease_file=${UPNP_DIR}/upnpd.leases
-        allow 1024-65535 0.0.0.0/0 1024-65535
-        deny 0-65535 0.0.0.0/0 0-65535
-    EOF
+		ext_ifname=${ext_if}
+		listening_ip=${int_if}
+		enable_natpmp=yes
+		enable_upnp=yes
+		secure_mode=yes
+		system_uptime=yes
+		lease_file=${UPNP_DIR}/upnpd.leases
+		allow 1024-65535 0.0.0.0/0 1024-65535
+		deny 0-65535 0.0.0.0/0 0-65535
+	EOF
 
     echo "Enabling UPnP on ext:$ext_if to int:$int_if"
 
