@@ -1,5 +1,5 @@
 #!/bin/sh
-#
+# {# jinja-parse #}
 # Collect system logs, state and current configuration.
 #
 

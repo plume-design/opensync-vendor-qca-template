@@ -37,7 +37,7 @@ RUN cd /usr/src/ucw && make install
 COPY hucw /usr/local/bin/hucw
 
 # TARGET=native build requires pcap dev files
-RUN eval $INSTALL libpcap-dev
+RUN $PKGINSTALL libpcap-dev
 
 # Install kconfiglib required for menuconfig
 RUN pip3 install kconfiglib

@@ -1,6 +1,5 @@
-BACKHAUL_SSID=$OPENSYNC_ONBOARD_SSID
-BACKHAUL_PASS=$OPENSYNC_ONBOARD_PSK
-MULTI_BACKHAUL_CREDS="ges_opensync;p@ssw0rd"
+BACKHAUL_SSID=$OS_ONBOARDING_SSID
+BACKHAUL_PASS=$OS_ONBOARDING_PSK
 
 gen_json_psk2()
 {
@@ -165,7 +164,6 @@ $creds_configs
             "hw_config": $(gen_qca8074_config),
             "ht_mode": "HT160",
             "hw_mode": "11ax",
-            $(gen_thermal_config)
             "tx_chainmask":3,
             "vif_configs": ["set", [
                 ["named-uuid", "id1"] ] ]
@@ -184,7 +182,6 @@ $creds_configs
             "hw_config": $(gen_qca8074_config),
             "ht_mode": "HT40",
             "hw_mode": "11ax",
-            $(gen_thermal_config)
             "tx_chainmask":3,
             "vif_configs": ["set", [
                 ["named-uuid", "id0"] ] ]
