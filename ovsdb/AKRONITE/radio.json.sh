@@ -177,7 +177,6 @@ $creds_configs
             "channel_mode": "cloud",
             "channel_sync": 0,
             "hw_type": "qca8074",
-            "hw_config": $(gen_qca8074_config),
             "ht_mode": "HT40",
             "hw_mode": "11n",
             "tx_chainmask":3,

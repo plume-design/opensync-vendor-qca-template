@@ -164,7 +164,7 @@ $creds_configs
             "hw_config": $(gen_qca8074_config),
             "ht_mode": "HT160",
             "hw_mode": "11ax",
-            "tx_chainmask":3,
+            "tx_chainmask":240,
             "vif_configs": ["set", [
                 ["named-uuid", "id1"] ] ]
         }
@@ -179,10 +179,9 @@ $creds_configs
             "channel_mode": "cloud",
             "channel_sync": 0,
             "hw_type": "qca8074",
-            "hw_config": $(gen_qca8074_config),
             "ht_mode": "HT40",
             "hw_mode": "11ax",
-            "tx_chainmask":3,
+            "tx_chainmask":15,
             "vif_configs": ["set", [
                 ["named-uuid", "id0"] ] ]
         }

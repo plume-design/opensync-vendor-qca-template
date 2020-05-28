@@ -1,8 +1,10 @@
 #!/bin/sh
 # {# jinja-parse #}
+#
 # Collect system logs, state and current configuration.
 #
 
+LOGPULL_TYPE="local"
 LOGPULL_DIR=/tmp/logpull/logpull_$(date +"%Y%m%d_%H%M%S")
 LOGPULL_ARCHIVE=/tmp/logpull/logpull_$(date +"%Y%m%d_%H%M%S").tar.gz
 
@@ -11,7 +13,7 @@ LOGPULL_ARCHIVE=/tmp/logpull/logpull_$(date +"%Y%m%d_%H%M%S").tar.gz
 #
 log()
 {
-    logger -s -p NOTICE -t LOGPULL "$@"
+    logger -s -p NOTICE -t LOGPULL "$@" >&2
 }
 
 ##
@@ -151,12 +153,42 @@ collect_and_pack()
 
     # Info
     log "Archive size: $(wc -c $LOGPULL_ARCHIVE | awk '{ print $1 }') B"
-    log "Archive name: $LOGPULL_ARCHIVE"
+
+    case $LOGPULL_TYPE in
+        local)
+            log "Archive name: $LOGPULL_ARCHIVE"
+            break
+            ;;
+        stdout)
+            cat $LOGPULL_ARCHIVE && rm $LOGPULL_ARCHIVE
+            break
+            ;;
+        remote)
+            # TODO
+            break
+            ;;
+    esac
+
     exit 0
 }
 
 ##
 # Main
 #
+
+case "$1" in
+    --stdout)
+        LOGPULL_TYPE="stdout"
+        break
+        ;;
+    --remote)
+        LOGPULL_TYPE="remote"
+        break
+        ;;
+    --local|*)
+        LOGPULL_TYPE="local"
+        break
+        ;;
+esac
 
 collect_and_pack

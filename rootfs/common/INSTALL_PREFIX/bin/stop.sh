@@ -33,7 +33,7 @@ gre_purge()
 # Therefore FM is stopped at the very end to
 # collect as much logs as possible prior to crash.
 echo "killing managers"
-killall -s SIGKILL dm cm nm wm lm sm bm um ledm om qm blem fsm tm
+killall -s SIGKILL dm cm nm wm lm sm bm um om qm fsm fcm
 
 # From this point on CM is dead and no one is kicking
 # watchdog.  There's less than 60s to complete everything

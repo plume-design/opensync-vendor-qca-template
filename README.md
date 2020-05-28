@@ -117,7 +117,7 @@ cd OPENSYNC_ROOT
    `SDK_ROOT/qsdk/` dir as `.config` file
 
 ```
-$ cp -fr vendor/qca-template/qca-sdk/qsdk/config_OS_[GATEWAY|EXTENDER]_QCA53* SDK_ROOT/qsdk/.config
+$ cp -fr vendor/qca-template/qca-sdk/qsdk-5.3/config_OS_[GATEWAY|EXTENDER]_QCA53* SDK_ROOT/qsdk/.config
 ```
 
 3. Unpack OpenSync related QSDK overlays (package, dependencies, patches) to `SDK_ROOT/` dir.
@@ -179,7 +179,7 @@ To build OpenSync as part of QSDK run the commands below.
 Build full QSDK for target `OS_GATEWAY_QCA53`:
 
 ```
-$ cp OPENSYNC_ROOT/vendor/qca-template/qca-sdk/qsdk/config-OS_GATEWAY_QCA53* SDK_ROOT/qsdk/.config
+$ cp OPENSYNC_ROOT/vendor/qca-template/qca-sdk/qsdk-5.3/config-OS_GATEWAY_QCA53* SDK_ROOT/qsdk/.config
 $ cd SDK_ROOT/qsdk
 $ make defconfig
 $ make
@@ -188,7 +188,7 @@ $ make
 Build full QSDK for target `OS_EXTENDER_QCA53`:
 
 ```
-$ cp OPENSYNC_ROOT/vendor/qca-template/qca-sdk/qsdk/config-OS_EXTENDER_QCA53* SDK_ROOT/qsdk/.config
+$ cp OPENSYNC_ROOT/vendor/qca-template/qca-sdk/qsdk-5.3/config-OS_EXTENDER_QCA53* SDK_ROOT/qsdk/.config
 $ cd SDK_ROOT/qsdk
 $ make defconfig
 $ make

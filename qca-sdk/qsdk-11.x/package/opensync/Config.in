@@ -1,0 +1,16 @@
+menu "OpenSync configuration"
+	depends on PACKAGE_opensync
+
+config OPENSYNC_NL_SUPPORT
+	bool "OpenSync enable NL support"
+	default y
+
+config OPENSYNC_ONBOARD_SSID
+	string "OpenSync onboarding network SSID"
+	default "none"
+
+config OPENSYNC_ONBOARD_PSK
+	string "OpenSync onboarding network PSK"
+	default "none"
+
+endmenu

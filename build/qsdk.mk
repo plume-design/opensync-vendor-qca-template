@@ -28,7 +28,10 @@ SDK_INCLUDES  += -I$(TOOLCHAIN_DIR)/usr/include
 SDK_LIB_DIR   += -L$(STAGING_DIR)/lib
 
 SDK_CFLAGS    += -Os -pipe -fno-caller-saves -fhonour-copts
-SDK_CFLAGS    += -Wno-error=unused-but-set-variable -msoft-float
+SDK_CFLAGS    += -Wno-error=unused-but-set-variable
+ifneq ($(ARCH_64BIT),y)
+SDK_CFLAGS    += -msoft-float
+endif
 SDK_CFLAGS    += -fasynchronous-unwind-tables -rdynamic
 SDK_CFLAGS    += -DINET6 -D_U_="__attribute__((unused))"
 SDK_CFLAGS    += -DMONT_NO_RFMON_MODE -DMONT_LINUX
