@@ -2,7 +2,7 @@ gen_eth_iface()
 {
     IFNAME=$1
 cat << EOF
-   {
+    {
         "op":"insert",
         "table":"Wifi_Inet_Config",
         "row":
@@ -29,4 +29,3 @@ cat << EOF
 ]
 
 EOF
-

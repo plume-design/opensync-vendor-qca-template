@@ -1,5 +1,5 @@
 ##
-# Pre-popluate wifi related OVSDB tables
+# Pre-populate WiFi related OVSDB tables
 #
 
 generate_onboarding_ssid()

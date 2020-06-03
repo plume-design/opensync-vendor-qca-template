@@ -10,7 +10,7 @@ gen_json_psk2()
                 ["encryption","WPA-PSK"],
                 ["key", "$BACKHAUL_PASS"]
             ]
-       ]
+        ]
 EOF
 }
 
@@ -26,17 +26,6 @@ gen_json_eaptls()
                 ["eap_private_key","client_dec.key"],
                 ["eap_cert_path","/var/certs/"],
                 ["eap_identity","pnode"]
-            ]
-       ]
-EOF
-}
-
-gen_qca9563_config()
-{
-    cat << EOF
-        ["map",
-            [
-                ["cwm_extbusythres", "30"]
             ]
         ]
 EOF
@@ -113,8 +102,6 @@ fi
 creds=$(gen_json_creds)
 creds_configs=$(gen_named_uuid "$creds")
 
-if [ "$TARGET" = "DAKOTA" ]
-then
 cat << EOF
 [
     "Open_vSwitch",
@@ -204,92 +191,3 @@ $creds_configs
     }
 ]
 EOF
-else
-cat << EOF
-[
-    "Open_vSwitch",
-$creds
-    {
-        "op": "insert",
-        "table": "Wifi_VIF_Config",
-        "row": {
-            "enabled": true,
-            "vif_dbg_lvl": 0,
-            "if_name": "bhaul-sta-50",
-            "mode": "sta",
-            "vif_radio_idx": 0,
-            "ssid": "$BACKHAUL_SSID",
-$creds_configs
-            "security": $($gen_security)
-        },
-        "uuid-name": "id1"
-    },
-    {
-        "op": "insert",
-        "table": "Wifi_VIF_Config",
-        "row": {
-            "enabled": true,
-            "vif_dbg_lvl": 0,
-            "if_name": "bhaul-sta-24",
-            "mode": "sta",
-            "vif_radio_idx": 0,
-            "ssid": "$BACKHAUL_SSID",
-$creds_configs
-            "security": $($gen_security)
-        },
-        "uuid-name": "id0"
-    },
-    {
-        "op": "insert",
-        "table": "Wifi_Radio_Config",
-        "row": {
-            "enabled": true,
-            "if_name": "wifi1",
-            "freq_band": "5G",
-            "channel_mode": "cloud",
-            "channel_sync": 0,
-            "hw_type": "qca9563",
-            "hw_config": $(gen_qca9563_config),
-            "ht_mode": "HT80",
-            "hw_mode": "11ac",
-            "vif_configs": ["set", [
-                ["named-uuid", "id1"] ] ]
-        }
-    },
-    {
-        "op": "insert",
-        "table": "Wifi_Radio_Config",
-        "row": {
-            "enabled": true,
-            "if_name": "wifi0",
-            "freq_band": "2.4G",
-            "channel_mode": "cloud",
-            "channel_sync": 0,
-            "hw_type": "qca9563",
-            "hw_config": $(gen_qca9563_config),
-            "ht_mode": "HT40",
-            "hw_mode": "11n",
-            "vif_configs": ["set", [
-                ["named-uuid", "id0"] ] ]
-        }
-    },
-    {
-        "op": "insert",
-        "table": "Wifi_Radio_Config",
-        "row": {
-            "enabled": true,
-            "if_name": "wifi2",
-            "freq_band": "5G",
-            "channel_mode": "cloud",
-            "channel_sync": 0,
-            "hw_type": "qca9563",
-            "hw_config": $(gen_qca9563_config),
-            "ht_mode": "HT80",
-            "hw_mode": "11ac",
-            "vif_configs": ["set", [
-                ["named-uuid", "id2"] ] ]
-        }
-    }
-]
-EOF
-fi
