@@ -8,7 +8,9 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME := opensync
 PKG_VERSION := 2.0
-PKG_RELEASE := 3
+PKG_RELEASE := 5
+OPENSYNC_VERSION := $(PKG_VERSION).$(PKG_RELEASE)
+
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -49,29 +51,23 @@ define Build/Configure
 	@echo === Build/Configure
 endef
 
-CORE_URL_FILE:=osync_2.0.3.zip
-CORE_DL_FILE:=opensync-core-osync_2.0.3.zip
 define Download/core
-  URL_FILE:=$(CORE_URL_FILE)
-  FILE:=$(CORE_DL_FILE)
+  URL_FILE:=osync_$(OPENSYNC_VERSION).zip
+  FILE:=opensync-core-osync_$(OPENSYNC_VERSION).zip
   URL:=https://github.com/plume-design/opensync/archive/
 endef
 $(eval $(call Download,core))
 
-PLATFORM_URL_FILE:=osync_2.0.3.zip
-PLATFORM_DL_FILE:=opensync-platform-osync_2.0.3.zip
 define Download/platform
-  URL_FILE:=$(PLATFORM_URL_FILE)
-  FILE:=$(PLATFORM_DL_FILE)
+  URL_FILE:=osync_$(OPENSYNC_VERSION).zip
+  FILE:=opensync-platform-osync_$(OPENSYNC_VERSION).zip
   URL:=https://github.com/plume-design/opensync-platform-qca/archive/
 endef
 $(eval $(call Download,platform))
 
-VENDOR_URL_FILE:=osync_2.0.2.zip
-VENDOR_DL_FILE:=opensync-vendor-osync_2.0.2.zip
 define Download/vendor
-  URL_FILE:=$(VENDOR_URL_FILE)
-  FILE:=$(VENDOR_DL_FILE)
+  URL_FILE:=osync_$(OPENSYNC_VERSION).zip
+  FILE:=opensync-vendor-osync_$(OPENSYNC_VERSION).zip
   URL:=https://github.com/plume-design/opensync-vendor-qca-template/archive/
 endef
 $(eval $(call Download,vendor))
@@ -81,16 +77,19 @@ define Build/Prepare
 	$(CP) $(STAGING_DIR)/root-ipq/usr/lib/libqca_tools.so $(STAGING_DIR)/usr/lib/
 
 	mkdir -p $(PKG_BUILD_DIR)
-	unzip $(DL_DIR)/$(CORE_DL_FILE) -d $(PKG_BUILD_DIR)/
-	mv $(PKG_BUILD_DIR)/opensync-osync_2.0.3 $(PKG_BUILD_DIR)/core
+	unzip $(DL_DIR)/opensync-core-osync_$(OPENSYNC_VERSION).zip -d $(PKG_BUILD_DIR)/
+	mv $(PKG_BUILD_DIR)/opensync-osync_$(OPENSYNC_VERSION) $(PKG_BUILD_DIR)/core
 
 	mkdir -p $(PKG_BUILD_DIR)/platform
-	unzip $(DL_DIR)/$(PLATFORM_DL_FILE) -d $(PKG_BUILD_DIR)/platform
-	mv $(PKG_BUILD_DIR)/platform/opensync-platform-qca-osync_2.0.3 $(PKG_BUILD_DIR)/platform/qca
+	unzip $(DL_DIR)/opensync-platform-osync_$(OPENSYNC_VERSION).zip -d $(PKG_BUILD_DIR)/platform
+	mv $(PKG_BUILD_DIR)/platform/opensync-platform-qca-osync_$(OPENSYNC_VERSION) $(PKG_BUILD_DIR)/platform/qca
 
 	mkdir -p $(PKG_BUILD_DIR)/vendor
-	unzip $(DL_DIR)/$(VENDOR_DL_FILE) -d $(PKG_BUILD_DIR)/vendor
-	mv $(PKG_BUILD_DIR)/vendor/opensync-vendor-qca-template-osync_2.0.2 $(PKG_BUILD_DIR)/vendor/qca-template
+	unzip $(DL_DIR)/opensync-vendor-osync_$(OPENSYNC_VERSION).zip -d $(PKG_BUILD_DIR)/vendor
+	mv $(PKG_BUILD_DIR)/vendor/opensync-vendor-qca-template-osync_$(OPENSYNC_VERSION) $(PKG_BUILD_DIR)/vendor/qca-template
+
+	mkdir -p $(PKG_BUILD_DIR)/vendor/qca-template/rootfs/target/HAWKEYE/INSTALL_PREFIX/certs
+	$$(INSTALL_BIN) ./files/* $(PKG_BUILD_DIR)/vendor/qca-template/rootfs/target/HAWKEYE/INSTALL_PREFIX/certs
 
 	$(Build/Prepare/Default)
 endef

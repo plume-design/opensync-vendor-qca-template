@@ -1,24 +1,18 @@
 #!/bin/sh
+# {# jinja-parse #}
+INSTALL_PREFIX={{INSTALL_PREFIX}}
+
 [ -z "$2" ] && echo "Error: should be run by odhcpc6c" && exit 1
+
+. ${INSTALL_PREFIX}/bin/dns_sub.sh
 
 OPTS_FILE=/var/run/odhcp6c_$1.opts
 
 update_resolv()
 {
-    local device="$1"
-    local dns="$2"
-
-    return 0
-
-    (
-        grep -v "#odhcp6c:$device:" /etc/resolv.conf > /tmp/resolv.conf.tmp
-        for c in $dns; do
-            echo "nameserver $c #odhcp6c:$device:" >> /tmp/resolv.conf.tmp
-        done
-        mv /tmp/resolv.conf.tmp /etc/resolv.conf
-        chmod 0644 /etc/resolv.conf
-    ) 9>/tmp/resolv.conf.lock
-    rm -f /tmp/resolv.conf.lock /tmp/resolv.conf.tmp
+    dns_reset "$1_ipv6"
+    [ -n "$2" ] && dns_add "$1_ipv6" "nameserver $2"
+    dns_apply "$1_ipv6"
 }
 
 setup_interface()
@@ -81,11 +75,8 @@ setup_interface()
         fi
 
         # TODO: delete this somehow when the prefix disappears
-        ip -6 route add unreachable "$addr"
+        ip -6 route replace unreachable "$addr" proto ra
     done
-
-    ip -6 route flush dev "$device"
-    ip -6 address flush dev "$device" scope global
 
     # Merge addresses
     for entry in $RA_ADDRESSES; do
@@ -105,8 +96,11 @@ setup_interface()
         entry="${entry#*,}"
         local valid="${entry%%,*}"
 
-        ip -6 address add "$addr" dev "$device" preferred_lft "$preferred" valid_lft "$valid"
+        ip -6 address replace "$addr" dev "$device" preferred_lft "$preferred" valid_lft "$valid" 
     done
+
+    # Flush old routing entries, if they exist
+    ip -6 route flush dev "$device" proto ra
 
     for entry in $RA_ROUTES; do
         local addr="${entry%%,*}"
@@ -118,19 +112,19 @@ setup_interface()
         local metric="${entry%%,*}"
 
         if [ -n "$gw" ]; then
-            ip -6 route add "$addr" via "$gw" metric "$metric" dev "$device" from "::/128"
+            ip -6 route replace "$addr" via "$gw" metric "$metric" dev "$device" from "::/128" proto ra
         else
-            ip -6 route add "$addr" metric "$metric" dev "$device"
+            ip -6 route replace "$addr" metric "$metric" dev "$device" proto ra
         fi
 
         for prefix in $PREFIXES; do
             local paddr="${prefix%%,*}"
-            [ -n "$gw" ] && ip -6 route add "$addr" via "$gw" metric "$metric" dev "$device" from "$paddr"
+            [ -n "$gw" ] && ip -6 route replace "$addr" via "$gw" metric "$metric" dev "$device" from "$paddr" proto ra
         done
     done
 
     # Apply hop-limit
-    [ -n "$RA_HOPLIMIT" -a "/proc/sys/net/ipv6/conf/$device/hop_limit" ] && {
+    [ -n "$RA_HOPLIMIT" -a "$RA_HOPLIMIT" != "0" -a "/proc/sys/net/ipv6/conf/$device/hop_limit" ] && {
         echo "$RA_HOPLIMIT" > "/proc/sys/net/ipv6/conf/$device/hop_limit"
     }
 
@@ -141,7 +135,7 @@ teardown_interface()
 {
     rm -f "$OPTS_FILE"
     local device="$1"
-    ip -6 route flush dev "$device"
+    ip -6 route flush dev "$device" proto ra
     ip -6 address flush dev "$device" scope global
     update_resolv "$device" ""
 }
@@ -152,10 +146,7 @@ teardown_interface()
             teardown_interface "$1"
             setup_interface "$1"
         ;;
-        # ESW-3068: ra-updated messages are constantly being spammed. odhcp6c reinitializes the interface
-        # and re-sends the DHCP options each time this happens. For the time being, remove it.
-        #informed|updated|rebound|ra-updated)
-        informed|updated|rebound)
+        informed|updated|rebound|ra-updated)
             setup_interface "$1"
         ;;
         stopped|unbound)
