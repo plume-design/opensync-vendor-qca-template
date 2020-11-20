@@ -23,9 +23,9 @@ reference board targets.
 
     | Component                    | Version     |         |
     |------------------------------|-------------|---------|
-    | OpenSync core                | 2.0.0       | public  |
-    | OpenSync vendor/qca-template | 2.0.0       | public  |
-    | OpenSync platform/qca        | 2.0.0       | public  |
+    | OpenSync core                | 2.0.x       | public  |
+    | OpenSync vendor/qca-template | 2.0.x       | public  |
+    | OpenSync platform/qca        | 2.0.x       | public  |
     | Qualcomm SDK                 | 5.3 or 11.0 | private |
 
 Note that Plume hardware based targets use Qualcomm SDK 5.3.
@@ -69,7 +69,7 @@ Follow these steps to populate the OPENSYNC_ROOT directory:
 ```
 $ git clone https://github.com/plume-design/opensync.git OPENSYNC_ROOT/core
 $ git clone https://github.com/plume-design/opensync-platform-qca.git OPENSYNC_ROOT/platform/qca
-$ git clone https://github.com/plume-design/opensync-vendor-qca.git OPENSYNC_ROOT/vendor/qca
+$ git clone https://github.com/plume-design/opensync-vendor-qca-template.git OPENSYNC_ROOT/vendor/qca-template
 $ mkdir -p OPENSYNC_ROOT/3rdparty
 $ mkdir -p OPENSYNC_ROOT/service-provider
 ```

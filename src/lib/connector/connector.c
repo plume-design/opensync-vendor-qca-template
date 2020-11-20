@@ -175,7 +175,6 @@ static bool connector_wifi_config_get(
                             (api->connector_vif_update_cb)(&vconf, rconf.if_name);
                         }
                     }
-
                 }
             }
         }
@@ -386,7 +385,7 @@ error:
 bool connector_sync_inet(const struct schema_Wifi_Inet_Config *iconf)
 {
     /*
-     * You can go over all inet settings or process just _changed flagsto populate your DB
+     * You can go over all inet settings or process just _changed flags to populate your DB
      * Example: if (inet->inet_addr_changed) set_new_ipl(inet->inet_addr);
      */
     return true;
