@@ -1,0 +1,11 @@
+config OSP_UNIT_QCA_TEMPLATE
+    bool "QCA template Plume hardware example"
+    help
+        Example of OSP unit API implementation used by Plume hardware based
+        targets from qca-template vendor layer.
+
+if OSP_UNIT_QCA_TEMPLATE
+    config OSP_UNIT_QCA_TEMPLATE_SERIAL_PREFIX
+        string "Unit serial number prefix"
+        default "OSx"
+endif

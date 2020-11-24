@@ -54,7 +54,7 @@
  *****************************************************************************/
 
 
-#include "target_ioctl.h"
+#include "target_qca.h"
 #include "target_common.h"
 
 #endif /* TARGET_HAWKEYE_H_INCLUDED */

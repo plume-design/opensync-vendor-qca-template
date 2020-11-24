@@ -21,7 +21,7 @@ cat << EOF
         "op":"insert",
         "table":"Wifi_Inet_Config",
         "row": {
-            "if_name": "bhaul-sta-50",
+            "if_name": "bhaul-sta-l50",
             "ip_assign_scheme": "$ip_assign_scheme",
             "mtu": $mtu,
             "if_type": "vif",
@@ -29,6 +29,20 @@ cat << EOF
             "network" : false,
             "NAT": false
         }
+    },
+    {
+        "op":"insert",
+        "table":"Wifi_Inet_Config",
+        "row": {
+            "if_name": "bhaul-sta-u50",
+            "ip_assign_scheme": "$ip_assign_scheme",
+            "mtu": $mtu,
+            "if_type": "vif",
+            "enabled" : true,
+            "network" : false,
+            "NAT": false
+        }
+
     }
 ]
 EOF

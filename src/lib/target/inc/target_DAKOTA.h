@@ -9,7 +9,7 @@
 #include "ioctl80211_radio.h"
 
 
-#define TARGET_ETHCLIENT_IFLIST     "eth0", "eth1", "eth2", "eth3", "eth4","eth5"
+#define TARGET_ETHCLIENT_IFLIST     "eth0", "eth1", "eth2", "eth3", "eth4"
 
 #define TARGET_CERT_PATH            "/var/certs"
 #define TARGET_MANAGERS_PID_PATH    "/tmp/dmpid"
@@ -42,7 +42,7 @@
  *****************************************************************************/
 
 
-#include "target_ioctl.h"
+#include "target_qca.h"
 #include "target_common.h"
 
 #endif /* TARGET_DAKOTA_H_INCLUDED */

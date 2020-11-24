@@ -119,7 +119,7 @@ $creds
 $creds_configs
             "security": $($gen_security)
         },
-        "uuid-name": "id0"
+        "uuid-name": "id2"
     },
     {
         "op": "insert",
@@ -127,7 +127,7 @@ $creds_configs
         "row": {
             "enabled": true,
             "vif_dbg_lvl": 0,
-            "if_name": "bhaul-sta-50",
+            "if_name": "bhaul-sta-l50",
             "mode": "sta",
             "vif_radio_idx": 0,
             "ssid": "$BACKHAUL_SSID",
@@ -138,14 +138,29 @@ $creds_configs
     },
     {
         "op": "insert",
+        "table": "Wifi_VIF_Config",
+        "row": {
+            "enabled": true,
+            "vif_dbg_lvl": 0,
+            "if_name": "bhaul-sta-u50",
+            "mode": "sta",
+            "vif_radio_idx": 0,
+            "ssid": "$BACKHAUL_SSID",
+$creds_configs
+            "security": $($gen_security)
+        },
+        "uuid-name": "id0"
+    },
+    {
+        "op": "insert",
         "table": "Wifi_Radio_Config",
         "row": {
             "enabled": true,
             "if_name": "wifi1",
-            "freq_band": "5G",
+            "freq_band": "5GL",
             "channel_mode": "cloud",
             "channel_sync": 0,
-            "hw_type": "qca4074",
+            "hw_type": "qca4019",
             "hw_config": $(gen_qca4074_config),
             "ht_mode": "HT80",
             "hw_mode": "11ac",
@@ -159,16 +174,16 @@ $creds_configs
         "table": "Wifi_Radio_Config",
         "row": {
             "enabled": true,
-            "if_name": "wifi0",
+            "if_name": "wifi2",
             "freq_band": "2.4G",
             "channel_mode": "cloud",
             "channel_sync": 0,
-            "hw_type": "qca4074",
+            "hw_type": "qca4019",
             "ht_mode": "HT40",
             "hw_mode": "11n",
-            "tx_chainmask":3,
+            "tx_chainmask":15,
             "vif_configs": ["set", [
-                ["named-uuid", "id0"] ] ]
+                ["named-uuid", "id2"] ] ]
         }
     },
     {
@@ -176,17 +191,17 @@ $creds_configs
         "table": "Wifi_Radio_Config",
         "row": {
             "enabled": true,
-            "if_name": "wifi2",
-            "freq_band": "5G",
+            "if_name": "wifi0",
+            "freq_band": "5GU",
             "channel_mode": "cloud",
             "channel_sync": 0,
-            "hw_type": "qca4074",
+            "hw_type": "qca4019",
             "hw_config": $(gen_qca4074_config),
             "ht_mode": "HT80",
             "hw_mode": "11ac",
             "tx_chainmask":3,
             "vif_configs": ["set", [
-                ["named-uuid", "id2"] ] ]
+                ["named-uuid", "id0"] ] ]
         }
     }
 ]

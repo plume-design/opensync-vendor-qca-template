@@ -10,8 +10,8 @@ reference boards:
 * `OS_GATEWAY_QCA53` - gateway mode only (Plume hardware)
 * `OS_EXTENDER_QCA53` - gateway and extender mode (Plume hardware)
 * `HAWKEYE` - gateway and extender mode (QCA reference board)
-* [Work in progress] `AKRONITE` - gateway and extender mode (QCA reference board)
-* [Work in progress] `DAKOTA` - gateway and extender mode (QCA reference board)
+* `AKRONITE` - gateway and extender mode (QCA reference board)
+* `DAKOTA` - gateway and extender mode (QCA reference board)
 
 Note that this README file mainly describes `OS_GATEWAY_QCA53` and
 `OS_EXTENDER_QCA53` targets, but some information also applies to QCA
@@ -23,10 +23,10 @@ reference board targets.
 
     | Component                    | Version     |         |
     |------------------------------|-------------|---------|
-    | OpenSync core                | 2.0.x       | public  |
-    | OpenSync vendor/qca-template | 2.0.x       | public  |
-    | OpenSync platform/qca        | 2.0.x       | public  |
-    | Qualcomm SDK                 | 5.3 or 11.0 | private |
+    | OpenSync core                | 2.2.x       | public  |
+    | OpenSync vendor/qca-template | 2.2.x       | public  |
+    | OpenSync platform/qca        | 2.2.x       | public  |
+    | Qualcomm SDK                 | 5.3 or 11.x | private |
 
 Note that Plume hardware based targets use Qualcomm SDK 5.3.
 
