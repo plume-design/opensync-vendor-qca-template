@@ -1,1 +1,1 @@
-OPTIONS="-D -t -a -m 5 -M 7200 time.plumenet.io"
+OPTIONS="-D -t -a -m 5 -M 7200 time-dualstack.plumenet.io"

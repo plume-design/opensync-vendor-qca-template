@@ -2,7 +2,7 @@
  "node": {
   "serial": "OSGXXXXXXXXXXXX",
   "mode": "cloud",
-  "redirector": "ssl:wildfire.plume.tech:443",
+  "redirector": "ssl:wildfire-dualstack.plume.tech:443",
   "revision": "1.0",
   "model": "PP213X-GW",
   "version": "1.0"

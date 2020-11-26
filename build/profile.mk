@@ -6,19 +6,19 @@
 # are identical.
 #
 # NOTE: To use the OpenSync cloud, one must use a profile that sets
-# CONTROLLER_ADDR to "ssl:wildfire.plume.tech:443".
+# CONTROLLER_ADDR to "ssl:wildfire-dualstack.plume.tech:443".
 #
 VALID_IMAGE_DEPLOYMENT_PROFILES = dev prod
 
 export IMAGE_DEPLOYMENT_PROFILE ?= dev
 
 ifeq ($(IMAGE_DEPLOYMENT_PROFILE),dev)
-CONTROLLER_ADDR="ssl:wildfire.plume.tech:443"
+CONTROLLER_ADDR="ssl:wildfire-dualstack.plume.tech:443"
 IMAGE_PROFILE_SUFFIX="$(IMAGE_DEPLOYMENT_PROFILE)"
 endif
 
 ifeq ($(IMAGE_DEPLOYMENT_PROFILE),prod)
-CONTROLLER_ADDR="ssl:wildfire.plume.tech:443"
+CONTROLLER_ADDR="ssl:wildfire-dualstack.plume.tech:443"
 IMAGE_PROFILE_SUFFIX="$(IMAGE_DEPLOYMENT_PROFILE)"
 endif
 
