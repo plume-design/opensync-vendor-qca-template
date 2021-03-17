@@ -5,7 +5,7 @@
 generate_onboarding_ssid()
 {
     cat << EOF
-        "$OS_ONBOARDING_SSID"
+        "$BACKHAUL_SSID"
 EOF
 }
 
@@ -15,7 +15,7 @@ generate_onboarding_psk()
         ["map",
             [
                 ["encryption","WPA-PSK"],
-                ["key", "$OS_ONBOARDING_PSK"]
+                ["key", "$BACKHAUL_PASS"]
             ]
        ]
 EOF
