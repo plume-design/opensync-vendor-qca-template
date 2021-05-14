@@ -201,7 +201,7 @@ $ cd SDK_ROOT/qsdk
 $ make package/opensync/{clean,compile} V=s
 ```
 
-Note that `TARGET` and some other build time variables are defined in the QSDK `.config` as:
+Note that `TARGET` and some other build-time variables are defined in the QSDK `.config` as:
 
 ```
 CONFIG_PACKAGE_opensync=y
@@ -210,7 +210,7 @@ CONFIG_OPENSYNC_ONBOARD_SSID="opensync.onboard"
 CONFIG_OPENSYNC_ONBOARD_PSK="7eCyoqETHiJzKBBALPFP9X8mVy4dwCga"
 ```
 
-For additional details see on `ONBOARD_SSID` and `ONBOARD_PSK` see `Makefile`.
+For additional details on `ONBOARD_SSID` and `ONBOARD_PSK` see `Makefile`.
 
 
 Image install

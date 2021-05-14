@@ -34,3 +34,6 @@ CONFIG_TARGET_MODEL="IPQ8064-AP-AP161"
 CONFIG_TARGET_NAME="Akronite"
 CONFIG_TARGET_PATH_PERSISTENT="/etc/opensync"
 # CONFIG_HOSTAP_TIMEOUT_T_SWITCH is not set
+CONFIG_OVSDB_BOOTSTRAP=y
+CONFIG_OVSDB_BOOTSTRAP_WIFI_PHY_LIST="wifi0:15:HT80:11ac:5GL:qca9984:dfs_usenol=\"1\",dfs_ignorecac=\"0\",dfs_enable=\"1\" wifi1:15:HT80:11ac:5GU:qca9984:dfs_usenol=\"1\",dfs_ignorecac=\"0\",dfs_enable=\"1\" wifi2:15:HT40:11n:2.4G:qca9984"
+CONFIG_OVSDB_BOOTSTRAP_WIFI_STA_LIST="wifi0:bhaul-sta-l50 wifi1:bhaul-sta-u50 wifi2:bhaul-sta-24"
