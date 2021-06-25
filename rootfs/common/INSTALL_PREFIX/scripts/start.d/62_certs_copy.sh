@@ -15,8 +15,5 @@ if [ ! -r /var/certs/ca.pem ] || \
     cp ${INSTALL_PREFIX}/certs/client_dec.key /var/certs/
 fi
 
-# In any case copy awsca.pem and upload.pem to certificate folder
-cp ${INSTALL_PREFIX}/certs/awsca.pem /var/certs/.
 cp ${INSTALL_PREFIX}/certs/auth.pem /var/certs/.
-cp ${INSTALL_PREFIX}/certs/upload.pem /var/certs/.
 

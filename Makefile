@@ -11,15 +11,15 @@ VENDOR_OVSDB_HOOKS := $(VENDOR_DIR)/ovsdb/common
 VENDOR_OVSDB_HOOKS += $(VENDOR_DIR)/ovsdb/$(TARGET)
 
 ##
-# Handle onboarding psk and ssid for HAWKEYE/AKRONITE/DAKOTA/OS_EXTENDER_QCA53
-# target during build.
+# Handle onboarding PSK and SSID for HAWKEYE/AKRONITE/DAKOTA/OS_EXTENDER_QCA53
+# targets.
 #
-# Note that BACKHAUL_PASS and BACKHAUL_SSID variables are required
-# for generating pre-populated WiFi related OVSDB entries required by extender
-# devices. (See: ovsdb/<TARGET>/radio.json.sh)
+# BACKHAUL_PASS and BACKHAUL_SSID variables are required for generating the
+# pre-populated WiFi related OVSDB entries needed for extender devices.
+# (See also: ovsdb/<TARGET>/radio.json.sh)
 #
 ifeq ($(MAKECMDGOALS),rootfs)
-ifneq ($(filter HAWKEYE AKRONITE DAKOTA OS_EXTENDER_QCA53,$(TARGET)),)
+ifneq ($(filter HAWKEYE HAWKEYE_RDP419 AKRONITE DAKOTA OS_EXTENDER_QCA53,$(TARGET)),)
 
 ifeq ($(BACKHAUL_PASS),)
 $(error TARGET=$(TARGET): Please provide BACKHAUL_PASS)
@@ -36,7 +36,7 @@ endif
 endif
 
 ##
-# OpenSync ref board image build
+# OpenSync reference board image build
 #
 ifeq ($(MAKECMDGOALS),image-create)
 include $(VENDOR_DIR)/build/image.mk

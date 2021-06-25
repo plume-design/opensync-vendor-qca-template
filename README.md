@@ -10,6 +10,7 @@ reference boards:
 * `OS_GATEWAY_QCA53` - gateway mode only (Plume hardware)
 * `OS_EXTENDER_QCA53` - gateway and extender mode (Plume hardware)
 * `HAWKEYE` - gateway and extender mode (QCA reference board)
+* `HAWKEYE_RDP419` - gateway and extender mode (QCA reference board with Pine chipset)
 * `AKRONITE` - gateway and extender mode (QCA reference board)
 * `DAKOTA` - gateway and extender mode (QCA reference board)
 
@@ -201,7 +202,7 @@ $ cd SDK_ROOT/qsdk
 $ make package/opensync/{clean,compile} V=s
 ```
 
-Note that `TARGET` and some other build time variables are defined in the QSDK `.config` as:
+Note that `TARGET` and some other build-time variables are defined in the QSDK `.config` as:
 
 ```
 CONFIG_PACKAGE_opensync=y
@@ -210,7 +211,7 @@ CONFIG_OPENSYNC_ONBOARD_SSID="opensync.onboard"
 CONFIG_OPENSYNC_ONBOARD_PSK="7eCyoqETHiJzKBBALPFP9X8mVy4dwCga"
 ```
 
-For additional details see on `ONBOARD_SSID` and `ONBOARD_PSK` see `Makefile`.
+For additional details on `ONBOARD_SSID` and `ONBOARD_PSK` see `Makefile`.
 
 
 Image install
