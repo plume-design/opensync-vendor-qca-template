@@ -14,3 +14,4 @@ CONFIG_TARGET_PATH_PERSISTENT="/etc/opensync"
 CONFIG_OVSDB_BOOTSTRAP=y
 CONFIG_OVSDB_BOOTSTRAP_WIFI_PHY_LIST="wifi0:3:HT80:11ac:5GU:qca4019:dfs_usenol=\"1\",dfs_ignorecac=\"0\",dfs_enable=\"1\" wifi1:3:HT80:11ac:5GL:qca4019:dfs_usenol=\"1\",dfs_ignorecac=\"0\",dfs_enable=\"1\" wifi2:15:HT40:11n:2.4G:qca4019"
 CONFIG_OVSDB_BOOTSTRAP_WIFI_STA_LIST="wifi0:bhaul-sta-u50 wifi1:bhaul-sta-l50 wifi2:bhaul-sta-24"
+CONFIG_MANAGER_WANO_IFACE_LIST="eth0 eth1 eth2"

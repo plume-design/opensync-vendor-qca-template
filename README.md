@@ -24,9 +24,9 @@ reference board targets.
 
     | Component                    | Version     |         |
     |------------------------------|-------------|---------|
-    | OpenSync core                | 3.0.x       | public  |
-    | OpenSync vendor/qca-template | 3.0.x       | public  |
-    | OpenSync platform/qca        | 3.0.x       | public  |
+    | OpenSync core                | 3.2.x       | public  |
+    | OpenSync vendor/qca-template | 3.2.x       | public  |
+    | OpenSync platform/qca        | 3.2.x       | public  |
     | Qualcomm SDK                 | 5.3 or 11.x | private |
 
 Note that Plume hardware based targets use Qualcomm SDK 5.3.
