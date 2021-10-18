@@ -11,8 +11,10 @@ reference boards:
 * `OS_EXTENDER_QCA53` - gateway and extender mode (Plume hardware)
 * `HAWKEYE` - gateway and extender mode (QCA reference board)
 * `HAWKEYE_RDP419` - gateway and extender mode (QCA reference board with Pine chipset)
+* `HAWKEYE_PINE` - gateway and extender mode (QCA reference board with Pine chipset)
 * `AKRONITE` - gateway and extender mode (QCA reference board)
 * `DAKOTA` - gateway and extender mode (QCA reference board)
+* `MAPLE_PINE_PINE` - gateway and extender mode (QCA reference board)
 
 Note that this README file mainly describes `OS_GATEWAY_QCA53` and
 `OS_EXTENDER_QCA53` targets, but some information also applies to QCA
