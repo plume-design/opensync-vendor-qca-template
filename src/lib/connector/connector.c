@@ -153,15 +153,13 @@ static bool connector_wifi_config_get(
                         SCHEMA_SET_STR(vconf.ssid, json_string_value(jvif_value));
                     }
 
-                    // Security - example only WPA2 (core/lib/schema/include/schema_consts.h)
-                    SCHEMA_KEY_VAL_APPEND(vconf.security, "encryption", "WPA-PSK");
-                    SCHEMA_KEY_VAL_APPEND(vconf.security, "mode", "2");
-
-                    // Process general device info
+                    // Security using the wpa_* fields
+                    SCHEMA_SET_BOOL(vconf.wpa, true);
+                    SCHEMA_VAL_APPEND(vconf.wpa_key_mgmt, "wpa2-psk");
                     jvif_value = json_object_get(jvif, "psk");
                     if (jvif_value && json_is_string(jvif_value))
                     {
-                        SCHEMA_KEY_VAL_APPEND(vconf.security, "key", json_string_value(jvif_value));
+                        SCHEMA_KEY_VAL_APPEND(vconf.wpa_psks, "key", json_string_value(jvif_value));
                     }
 
                     // Check if VIF is still enabled and needs updates
@@ -355,7 +353,7 @@ bool connector_sync_vif(const struct schema_Wifi_VIF_Config *vconf)
                     jvif_value = json_object_get(jvif, "psk");
                     if (jvif_value && json_is_string(jvif_value))
                     {
-                        json_string_set(jvif_value, SCHEMA_KEY_VAL(vconf->security, "key"));
+                        json_string_set(jvif_value, SCHEMA_KEY_VAL(vconf->wpa_psks, "key"));
                     }
 
                     jvif_value = json_object_get(jvif, "enabled");
