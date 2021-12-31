@@ -29,9 +29,6 @@ ifeq ($(BACKHAUL_SSID),)
 $(error TARGET=$(TARGET): Please provide BACKHAUL_SSID)
 endif
 
-export BACKHAUL_PASS=$(BACKHAUL_PASS)
-export BACKHAUL_SSID=$(BACKHAUL_SSID)
-
 endif
 endif
 

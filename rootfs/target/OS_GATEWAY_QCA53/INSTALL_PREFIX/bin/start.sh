@@ -69,18 +69,9 @@ MAC_ETH0=$(mac_get eth0)
 # Set the local bit on eth0
 MAC_ETH1=$(mac_set_local_bit ${MAC_ETH0})
 
-echo "Adding br-wan with MAC address $MAC_ETH0"
-ovs-vsctl add-br br-wan
-ovs-vsctl set bridge br-wan other-config:hwaddr="$MAC_ETH0"
-ovs-vsctl set int br-wan mtu_request=1500
-
 echo "Adding br-home with MAC address $MAC_ETH1"
 ovs-vsctl add-br br-home
 ovs-vsctl set bridge br-home other-config:hwaddr="$MAC_ETH1"
-
-# This is GW image specific
-echo "Adding eth0 to br-wan"
-ovs-vsctl add-port br-wan eth0
 
 echo "Enabling LAN interface eth1"
 ifconfig eth1 up
