@@ -42,7 +42,7 @@ RUN $PKGINSTALL libpcap-dev
 # Install kconfiglib required for menuconfig
 RUN pip3 install kconfiglib
 
-RUN pip3 install Jinja2
+RUN pip3 install 'MarkupSafe<2.0.0' 'Jinja2<3.0.0'
 
 # default cmd
 CMD bash -i
