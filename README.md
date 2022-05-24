@@ -43,7 +43,6 @@ Note that Plume hardware based targets use Qualcomm SDK 5.3.
     |---------------|---------------------------------------------------|
     | eth0          | WAN ethernet interface                            |
     | eth1          | LAN ethernet interface                            |
-    | br-wan        | WAN bridge                                        |
     | br-home       | LAN bridge                                        |
     | wifi0         | 2.4G wireless phy interace                        |
     | wifi1         | 5G lower wireless phy interace                    |
