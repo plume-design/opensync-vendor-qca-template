@@ -23,8 +23,7 @@ mac_get()
 # Configure bridges
 #
 MAC_ETH0=$(mac_get eth0)
-# Set the local bit on eth0
-MAC_ETH1=$(mac_set_local_bit ${MAC_ETH0})
+MAC_ETH1=$(mac_get eth1)
 
 echo "Adding br-home with MAC address $MAC_ETH1"
 ovs-vsctl add-br br-home
