@@ -5,7 +5,7 @@
 # which share some portions of code. This template contains two
 # target implementations: OS_GATEWAY_QCA53 and OS_EXTENDER_QCA53.
 #
-QCA_TEMPLATE_TARGETS := OS_GATEWAY_QCA53 OS_EXTENDER_QCA53 HAWKEYE HAWKEYE_RDP419 HAWKEYE_PINE AKRONITE DAKOTA MAPLE_PINE_PINE
+QCA_TEMPLATE_TARGETS := OS_GATEWAY_QCA53 OS_EXTENDER_QCA53 HAWKEYE HAWKEYE_RDP419 HAWKEYE_PINE AKRONITE DAKOTA MAPLE_PINE_PINE ALDER_PINE_PINE
 
 OS_TARGETS          += $(QCA_TEMPLATE_TARGETS)
 
@@ -69,6 +69,13 @@ endif
 
 ifneq ($(filter MAPLE_PINE_PINE,$(TARGET)),)
 VERSION_TARGET                  = MAPLE_PINE_PINE
+CPU_TYPE                        = arm
+DRIVER_VERSION                  = qca10_2_4_csu3
+SDK                             = .
+endif
+
+ifneq ($(filter ALDER_PINE_PINE,$(TARGET)),)
+VERSION_TARGET                  = ALDER_PINE_PINE
 CPU_TYPE                        = arm
 DRIVER_VERSION                  = qca10_2_4_csu3
 SDK                             = .

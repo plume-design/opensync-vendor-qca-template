@@ -15,6 +15,7 @@ reference boards:
 * `AKRONITE` - gateway and extender mode (QCA reference board)
 * `DAKOTA` - gateway and extender mode (QCA reference board)
 * `MAPLE_PINE_PINE` - gateway and extender mode (QCA reference board)
+* `ALDER_PINE_PINE` - gateway and extender mode (QCA reference board)
 
 Note that this README file mainly describes `OS_GATEWAY_QCA53` and
 `OS_EXTENDER_QCA53` targets, but some information also applies to QCA
