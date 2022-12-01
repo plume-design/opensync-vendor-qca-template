@@ -2,10 +2,9 @@
 # TARGET definitions
 #
 # NOTE: A single vendor repository may contain multiple targets,
-# which share some portions of code. This template contains two
-# target implementations: OS_GATEWAY_QCA53 and OS_EXTENDER_QCA53.
+# which share some portions of code.
 #
-QCA_TEMPLATE_TARGETS := OS_GATEWAY_QCA53 OS_EXTENDER_QCA53 HAWKEYE HAWKEYE_RDP419 HAWKEYE_PINE AKRONITE DAKOTA MAPLE_PINE_PINE ALDER_PINE_PINE
+QCA_TEMPLATE_TARGETS := HAWKEYE HAWKEYE_RDP419 HAWKEYE_PINE AKRONITE DAKOTA MAPLE_PINE_PINE ALDER_PINE_PINE
 
 OS_TARGETS          += $(QCA_TEMPLATE_TARGETS)
 
@@ -24,13 +23,6 @@ KCONFIG_TARGET      ?= $(VENDOR_DIR)/kconfig/targets/$(TARGET)
 
 
 # TARGET specific settings
-
-ifneq ($(filter OS_GATEWAY_QCA53 OS_EXTENDER_QCA53,$(TARGET)),)
-VERSION_TARGET                  = PIRANHA2
-CPU_TYPE                        = arm
-DRIVER_VERSION                  = qca10_2_4_csu3
-SDK                             = qsdk53
-endif
 
 ifneq ($(filter HAWKEYE,$(TARGET)),)
 VERSION_TARGET                  = HAWKEYE

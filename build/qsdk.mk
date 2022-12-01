@@ -34,7 +34,7 @@ SDK_CFLAGS    += -Wno-error=unused-but-set-variable
 ifneq ($(ARCH_64BIT),y)
 SDK_CFLAGS    += -msoft-float
 endif
-SDK_CFLAGS    += -fasynchronous-unwind-tables -rdynamic
+SDK_CFLAGS    += -fasynchronous-unwind-tables -rdynamic -fno-omit-frame-pointer
 SDK_CFLAGS    += -DINET6 -D_U_="__attribute__((unused))"
 SDK_CFLAGS    += -DMONT_NO_RFMON_MODE -DMONT_LINUX
 SDK_CFLAGS    += -DQCA_10_4

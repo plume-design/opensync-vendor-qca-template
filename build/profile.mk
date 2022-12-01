@@ -1,7 +1,4 @@
 ##
-# Deployment profile controls default cloud connection settings
-# for OS_EXTENDER_QCA53.
-#
 # Here we have an example of two profiles (dev and prod), which
 # are identical.
 #

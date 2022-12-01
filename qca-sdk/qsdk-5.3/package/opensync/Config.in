@@ -3,7 +3,6 @@ menu "OpenSync configuration"
 
 config OPENSYNC_TARGET
 	string "Device TARGET specifier"
-	default "OS_EXTENDER_QCA53"
 
 config OPENSYNC_ONBOARD_SSID
 	string "OpenSync onboarding network SSID"
