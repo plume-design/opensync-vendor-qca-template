@@ -1,0 +1,34 @@
+{
+ "node": {
+  "serial": "OSGXXXXXXXXXXXX",
+  "mode": "cloud",
+  "redirector": "ssl:wildfire-dualstack.plume.tech:443",
+  "revision": "1.0",
+  "model": "IPQ807X-AP-HK09",
+  "version": "1.0"
+ },
+ "wifi": [
+  {
+   "if_name": "wifi0",
+   "vif": [
+    {
+     "if_name": "home-ap-24",
+     "ssid": "OpenSyncAcademyQCA",
+     "psk": "opensync1234",
+     "enabled": "true"
+    }
+   ]
+  },
+  {
+   "if_name": "wifi1",
+   "vif": [
+    {
+     "if_name": "home-ap-l50",
+     "ssid": "OpenSyncAcademyQCA",
+     "psk": "opensync1234",
+     "enabled": "true"
+    }
+   ]
+  }
+ ]
+}

@@ -1,4 +1,6 @@
 ##
+# Deployment profile controls default cloud connection settings
+#
 # Here we have an example of two profiles (dev and prod), which
 # are identical.
 #
