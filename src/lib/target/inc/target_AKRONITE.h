@@ -11,9 +11,7 @@
 
 #define TARGET_ETHCLIENT_IFLIST     "eth0", "eth1", "eth2", "eth3", "eth4"
 
-#define TARGET_CERT_PATH            "/var/certs"
 #define TARGET_MANAGERS_PID_PATH    "/tmp/dmpid"
-#define TARGET_OVSDB_SOCK_PATH      "/var/run/openvswitch/db.sock"
 #define TARGET_LOGREAD_FILENAME     "/var/log/messages"
 
 

@@ -21,9 +21,9 @@ reference boards:
 
     | Component                    | Version     |         |
     |------------------------------|-------------|---------|
-    | OpenSync core                | 4.4.x       | public  |
-    | OpenSync vendor/qca-template | 4.4.x       | public  |
-    | OpenSync platform/qca        | 4.4.x       | public  |
+    | OpenSync core                | 5.2.x       | public  |
+    | OpenSync vendor/qca-template | 5.2.x       | public  |
+    | OpenSync platform/qca        | 5.2.x       | public  |
     | Qualcomm SDK                 | 11.x        | private |
 
 #### QCA reference device information
