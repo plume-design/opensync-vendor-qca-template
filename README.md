@@ -4,8 +4,7 @@ OpenSync QCA Template
 Reference/template QCA vendor layer implementation provides support for reference
 QCA based targets.
 
-This vendor layer provides two example target implementations based on the
-reference hardware (described below), as well as example targets for several
+This vendor layer provides example target implementations for the following
 reference boards:
 * `HAWKEYE` - gateway and extender mode (QCA reference board)
 * `HAWKEYE_RDP419` - gateway and extender mode (QCA reference board with Pine chipset)
@@ -14,6 +13,7 @@ reference boards:
 * `DAKOTA` - gateway and extender mode (QCA reference board)
 * `MAPLE_PINE_PINE` - gateway and extender mode (QCA reference board)
 * `ALDER_PINE_PINE` - gateway and extender mode (QCA reference board)
+* `MAPLE_SPRUCE_PINE` - gateway and extender mode (QCA reference board)
 
 #### Reference software versions
 
@@ -21,12 +21,12 @@ reference boards:
 
     | Component                    | Version     |         |
     |------------------------------|-------------|---------|
-    | OpenSync core                | 5.2.x       | public  |
-    | OpenSync vendor/qca-template | 5.2.x       | public  |
-    | OpenSync platform/qca        | 5.2.x       | public  |
+    | OpenSync core                | 5.4.x       | public  |
+    | OpenSync vendor/qca-template | 5.4.x       | public  |
+    | OpenSync platform/qca        | 5.4.x       | public  |
     | Qualcomm SDK                 | 11.x        | private |
 
-#### QCA reference device information
+#### Reference device information
 
 * Interfaces:
 
@@ -127,20 +127,17 @@ $ cd SDK_ROOT/qsdk
 $ cp qca/configs/qsdk/ipq_[premium/enterprise].config .config
 ```
 
-Update the configuration file for a specific target (32 or 64) bit:
+Update the configuration file for the specific chipset architecture:
 
 ```
-$ sed -i "s/TARGET_ipq_ipq806x/TARGET_ipq_[ipqxxxx/ipqxxxx_64]/g" .config
+$ sed -i "s/TARGET_ipq_ipq806x/TARGET_ipq_ipqxxxx/g" .config
 $ mv prebuilt/ipqxxxx/ipq_premium/* prebuilt/ipqxxxx/
 ```
 
+Note: To build 64-bit binaries, use `ipqxxxx_64`.
+
 The OpenSync `TARGET` and some other build-time variables are defined in the QSDK,
-in the `.config` file.
-
-To configure the OpenSync package, run:
-
-Note that CONFIG_OPENSYNC_NL_SUPPORT must be enabled.
-Also, provide the onboard SSID and password, and select a valid target.
+in the `.config` file. To configure the OpenSync package, run:
 
 ```
 $ echo "CONFIG_PACKAGE_opensync=y" >>.config
@@ -153,7 +150,11 @@ $ make defconfig
 $ make
 ```
 
-or, by using interactive `menuconfig`:
+Specify a valid target and provide the onboard SSID and password.
+Note that CONFIG_OPENSYNC_NL_SUPPORT must be enabled.
+
+
+Alternatively, configuration can be performed using interactive `menuconfig`:
 
 ```
 $ make menuconfig
@@ -175,7 +176,7 @@ $ make menuconfig
 $ make
 ```
 
-Re-build only the OpenSync package:
+To rebuild only the OpenSync package:
 
 ```
 $ cd SDK_ROOT/qsdk
@@ -184,12 +185,11 @@ $ make package/opensync/{clean,compile} V=s
 
 For additional details on `ONBOARD_SSID` and `ONBOARD_PSK` see `Makefile`.
 
-TO Build full QSDK and to generate image for a specific target (32 or 64) bit,
-refer to SDK release notes.
+
+Image install
+-------------
 
 #### Full image reflash
-
-This is only applicable for reference hardware like Hawkeye, Akronite, ...
 
 Copy the xxxx-ipqxxxx-single.img to the TFTP server boot directory.
 Set the IP address and server IP using the TFTP process:

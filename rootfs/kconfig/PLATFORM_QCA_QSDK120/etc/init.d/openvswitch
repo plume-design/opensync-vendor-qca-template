@@ -1,0 +1,71 @@
+#!/bin/sh /etc/rc.common
+# {# jinja-parse #}
+INSTALL_PREFIX={{INSTALL_PREFIX}}
+
+START=15
+#STOP=
+
+SERVICE_DAEMONIZE=1
+SERVICE_WRITE_PID=1
+SERVICE_USE_PID=1
+
+NAME=openvswitch
+PIDCOUNT=0
+
+OVSDB_ORIG=${INSTALL_PREFIX}/etc/conf.db.bck
+OVSDB_ORIG_Z=$OVSDB_ORIG.z
+OVSDB_WORK_DIR=/tmp/etc/openvswitch
+OVSDB_WORK_COPY=$OVSDB_WORK_DIR/conf.db
+OVSDB_WORK_COPY_GZ=$OVSDB_WORK_COPY.gz
+OVSDB_RUN_DIR=/var/run/openvswitch
+
+start()
+{
+    [ -x "$OVSDB_RUN_DIR" ] || mkdir -p "$OVSDB_RUN_DIR"
+
+    #create ramdisk folder for non-persistent ovsdb DB
+    [ -x "$OVSDB_WORK_DIR" ] || mkdir -p "$OVSDB_WORK_DIR"
+
+    if [ -e "$OVSDB_ORIG_Z" ];
+    then
+        # decompress compressed OVSDB file
+        ${INSTALL_PREFIX}/bin/ovsdb-inflate < "$OVSDB_ORIG_Z" > "$OVSDB_WORK_COPY_GZ"
+        gzip -dc "$OVSDB_WORK_COPY_GZ" > "$OVSDB_WORK_COPY"
+        rm -f "$OVSDB_WORK_COPY_GZ"
+    else
+        # copy pre-populated db conf.db to ramdisk
+        cp "$OVSDB_ORIG" "$OVSDB_WORK_COPY"
+    fi
+
+    # ovsdb-server start against non-persistent DB
+    service_start /usr/sbin/ovsdb-server --remote=punix:/var/run/db.sock \
+        --remote=db:Open_vSwitch,Open_vSwitch,manager_options \
+        --private-key=db:Open_vSwitch,SSL,private_key \
+        --certificate=db:Open_vSwitch,SSL,certificate \
+        --ca-cert=db:Open_vSwitch,SSL,ca_cert \
+        --pidfile=/var/run/ovsdb-server.pid "$OVSDB_WORK_COPY"
+
+    ln -sf /var/run/ovsdb-server.pid $OVSDB_RUN_DIR/ovsdb-server.pid
+    ln -sf /var/run/db.sock $OVSDB_RUN_DIR/db.sock
+
+    # ovs-vswitchd
+{%- if CONFIG_TARGET_USE_NATIVE_BRIDGE %}
+    logger "$0: Not Starting openvswitch in native bridge mode ..."
+{%- else %}
+    service_start /usr/sbin/ovs-vswitchd --pidfile=/var/run/ovs-vswitchd.pid
+
+    ln -sf /var/run/ovs-vswitchd.pid $OVSDB_RUN_DIR/ovs-vswitchd.pid
+{%- endif %}
+}
+
+stop()
+{
+    # ovsdb-server
+    service_stop /usr/sbin/ovsdb-server
+
+{% if not CONFIG_TARGET_USE_NATIVE_BRIDGE %}
+    logger "$0: Stopping openvswitch ..."
+    # ovs-vswitchd
+    service_stop /usr/sbin/ovs-vswitchd
+{%- endif %}
+}

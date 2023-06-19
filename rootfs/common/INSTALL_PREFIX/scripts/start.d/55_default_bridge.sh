@@ -25,9 +25,14 @@ mac_get()
 MAC_ETH0=$(mac_get eth0)
 MAC_ETH1=$(mac_get eth1)
 
-echo "Adding br-home with MAC address $MAC_ETH1"
-ovs-vsctl add-br br-home
-ovs-vsctl set bridge br-home other-config:hwaddr="$MAC_ETH1"
+echo "Adding LAN bridge with MAC address $MAC_ETH1"
+{%- if CONFIG_TARGET_USE_NATIVE_BRIDGE %}
+brctl addbr {{ CONFIG_TARGET_LAN_BRIDGE_NAME }}
+ip link set {{ CONFIG_TARGET_LAN_BRIDGE_NAME }} address "$MAC_ETH1"
+{%- else %}
+ovs-vsctl add-br {{ CONFIG_TARGET_LAN_BRIDGE_NAME }}
+ovs-vsctl set bridge {{ CONFIG_TARGET_LAN_BRIDGE_NAME }} other-config:hwaddr="$MAC_ETH1"
+{%- endif %}
 
 echo "Enabling LAN interface eth1"
 ifconfig eth1 up

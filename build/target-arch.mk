@@ -4,7 +4,7 @@
 # NOTE: A single vendor repository may contain multiple targets,
 # which share some portions of code.
 #
-QCA_TEMPLATE_TARGETS := HAWKEYE HAWKEYE_RDP419 HAWKEYE_PINE AKRONITE DAKOTA MAPLE_PINE_PINE ALDER_PINE_PINE
+QCA_TEMPLATE_TARGETS := HAWKEYE HAWKEYE_RDP419 HAWKEYE_PINE AKRONITE DAKOTA MAPLE_PINE_PINE ALDER_PINE_PINE ALDER_WAIKIKI MAPLE_SPRUCE_PINE
 
 OS_TARGETS          += $(QCA_TEMPLATE_TARGETS)
 
@@ -68,6 +68,13 @@ endif
 
 ifneq ($(filter ALDER_PINE_PINE,$(TARGET)),)
 VERSION_TARGET                  = ALDER_PINE_PINE
+CPU_TYPE                        = arm
+DRIVER_VERSION                  = qca10_2_4_csu3
+SDK                             = .
+endif
+
+ifneq ($(filter ALDER_WAIKIKI,$(TARGET)),)
+VERSION_TARGET                  = ALDER_WAIKIKI
 CPU_TYPE                        = arm
 DRIVER_VERSION                  = qca10_2_4_csu3
 SDK                             = .

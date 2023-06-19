@@ -11,15 +11,14 @@ VENDOR_OVSDB_HOOKS := $(VENDOR_DIR)/ovsdb/common
 VENDOR_OVSDB_HOOKS += $(VENDOR_DIR)/ovsdb/$(TARGET)
 
 ##
-# Handle onboarding PSK and SSID for HAWKEYE/AKRONITE/DAKOTA/MAPLE_PINE_PINE/HAWKEYE_PINE/ALDER_PINE_PINE
-# targets.
+# Handle onboarding PSK and SSID
 #
 # BACKHAUL_PASS and BACKHAUL_SSID variables are required for generating the
 # pre-populated WiFi related OVSDB entries needed for extender devices.
-# (See also: ovsdb/<TARGET>/radio.json.sh)
+# (See also: core/ovsdb/20_kconfig.radio.json.sh)
 #
 ifeq ($(MAKECMDGOALS),rootfs)
-ifneq ($(filter HAWKEYE HAWKEYE_RDP419 HAWKEYE_PINE AKRONITE DAKOTA MAPLE_PINE_PINE ALDER_PINE_PINE,$(TARGET)),)
+ifneq ($(filter HAWKEYE HAWKEYE_RDP419 HAWKEYE_PINE AKRONITE DAKOTA MAPLE_PINE_PINE ALDER_PINE_PINE MAPLE_SPRUCE_PINE,$(TARGET)),)
 
 ifeq ($(BACKHAUL_PASS),)
 $(error TARGET=$(TARGET): Please provide BACKHAUL_PASS)
