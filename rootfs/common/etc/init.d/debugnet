@@ -4,11 +4,11 @@ INSTALL_PREFIX={{INSTALL_PREFIX}}
 
 START=50
 
-SERVICE_PID_FILE="/var/run/udhcpc.pid"
+SERVICE_PID_FILE_BASE="/var/run/udhcpc"
 
 NAME=debugnet
 
-INTERFACES="eth0"
+INTERFACES="{{ CONFIG_MANAGER_WANO_IFACE_LIST }}"
 VLAN=4
 
 start()
@@ -20,6 +20,8 @@ start()
 
         VIF="${IF}.${VLAN}"
         [ -d "/sys/class/net/$VIF" ] || vconfig add $IF $VLAN
+
+        SERVICE_PID_FILE=$SERVICE_PID_FILE_BASE-$VIF".pid"
 
         # Bring-up interfaces
         ifconfig $IF up
@@ -36,7 +38,9 @@ stop()
         [ ! -e /sys/class/net/$IF ] && continue
 
         VIF="${IF}.${VLAN}"
+        SERVICE_PID_FILE=$SERVICE_PID_FILE_BASEi-$VIF".pid"
         start-stop-daemon -K -x /sbin/udhcpc -p $SERVICE_PID_FILE
+        rm $SERVICE_PID_FILE
         [ -d "/sys/class/net/$VIF" ] && vconfig rem $VIF
     done
 }

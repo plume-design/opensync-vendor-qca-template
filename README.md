@@ -13,6 +13,7 @@ reference boards:
 * `DAKOTA` - gateway and extender mode (QCA reference board)
 * `MAPLE_PINE_PINE` - gateway and extender mode (QCA reference board)
 * `ALDER_PINE_PINE` - gateway and extender mode (QCA reference board)
+* `ALDER_WAIKIKI` - gateway and extender mode (QCA reference board)
 * `MAPLE_SPRUCE_PINE` - gateway and extender mode (QCA reference board)
 
 #### Reference software versions
@@ -21,12 +22,12 @@ reference boards:
 
     | Component                    | Version     |         |
     |------------------------------|-------------|---------|
-    | OpenSync core                | 5.4.x       | public  |
-    | OpenSync vendor/qca-template | 5.4.x       | public  |
-    | OpenSync platform/qca        | 5.4.x       | public  |
+    | OpenSync core                | 5.6.x       | public  |
+    | OpenSync vendor/qca-template | 5.6.x       | public  |
+    | OpenSync platform/qca        | 5.6.x       | public  |
     | Qualcomm SDK                 | 11.x        | private |
 
-#### Reference device information
+#### Reference board information
 
 * Interfaces:
 
@@ -50,9 +51,48 @@ OpenSync root dir
 OpenSync build system requires a certain directory structure in order to ensure
 modularity. Key components are:
 
-* OpenSync core:         `core`
-* OpenSync QCA platform: `platform/qca`
-* OpenSync QCA template: `vendor/qca-template`
+* OpenSync core:             `OPENSYNC_ROOT/core`
+* OpenSync QCA platform:     `OPENSYNC_ROOT/platform/qca`
+* OpenSync QCA template:     `OPENSYNC_ROOT/vendor/qca-template`
+* OpenSync service provider: `OPENSYNC_ROOT/service-provider/local` ([local](https://github.com/plume-design/opensync-service-provider-local) given as an example which needs to be replaced with your service provider)
+
+Follow these steps to populate the OPENSYNC_ROOT directory:
+
+```
+$ git clone https://github.com/plume-design/opensync.git OPENSYNC_ROOT/core
+$ git clone https://github.com/plume-design/opensync-platform-qca.git OPENSYNC_ROOT/platform/qca
+$ git clone https://github.com/plume-design/opensync-vendor-qca-template.git OPENSYNC_ROOT/vendor/qca-template
+$ git clone https://github.com/plume-design/opensync-service-provider-local.git OPENSYNC_ROOT/service-provider/local
+$ mkdir -p OPENSYNC_ROOT/3rdparty
+```
+
+The resulting layout should be as follows:
+
+```
+OPENSYNC_ROOT
+├── 3rdparty
+│   └── ...
+├── core
+│   ├── 3rdparty -> ../3rdparty
+│   ├── build
+│   ├── doc
+│   ├── images
+│   ├── interfaces
+│   ├── kconfig
+│   ├── Makefile
+│   ├── ovsdb
+│   ├── platform -> ../platform
+│   ├── README.md
+│   ├── src
+│   ├── vendor -> ../vendor
+│   └── work
+├── platform
+│   └── qca
+├── service-provider
+│   └── ...
+└── vendor
+    └── qca-template
+```
 
 
 QCA SDK
@@ -142,8 +182,6 @@ in the `.config` file. To configure the OpenSync package, run:
 ```
 $ echo "CONFIG_PACKAGE_opensync=y" >>.config
 $ echo "CONFIG_OPENSYNC_NL_SUPPORT=y" >>.config
-$ echo "CONFIG_OPENSYNC_ONBOARD_SSID="xxxxxxxxxx"" >>.config
-$ echo "CONFIG_OPENSYNC_ONBOARD_PSK="xxxxxxxxxx"" >>.config
 $ echo "CONFIG_<TARGET_NAME>=y" >>.config
 
 $ make defconfig
@@ -163,8 +201,6 @@ $ make menuconfig
       <*> opensync........................................... OpenSync QSDK package
       OpenSync configuration --->
           [*] OpenSync enable NL support
-          (none) OpenSync onboarding network SSID
-          (none) OpenSync onboarding network PSK
       Target (None) --->
           (X) None
           ( ) Dakota
@@ -172,6 +208,7 @@ $ make menuconfig
           ( ) Akronite
           ( ) Hawkeye
           ( ) Hawkeye Pine
+          ...
 
 $ make
 ```
@@ -183,7 +220,10 @@ $ cd SDK_ROOT/qsdk
 $ make package/opensync/{clean,compile} V=s
 ```
 
-For additional details on `ONBOARD_SSID` and `ONBOARD_PSK` see `Makefile`.
+Note that additional build-time variables `BACKHAUL_PASS` and `BACKHAUL_SSID`
+used to be passed into the make command but have since been deprecated because
+they are set in service-provider repositories based on the chosen
+`IMAGE_DEPLOYMENT_PROFILE`. See `Makefile` for details.
 
 
 Image install

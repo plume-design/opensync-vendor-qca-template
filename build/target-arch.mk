@@ -4,7 +4,8 @@
 # NOTE: A single vendor repository may contain multiple targets,
 # which share some portions of code.
 #
-QCA_TEMPLATE_TARGETS := HAWKEYE HAWKEYE_RDP419 HAWKEYE_PINE AKRONITE DAKOTA MAPLE_PINE_PINE ALDER_PINE_PINE ALDER_WAIKIKI MAPLE_SPRUCE_PINE
+QCA_TEMPLATE_TARGETS := HAWKEYE HAWKEYE_RDP419 HAWKEYE_PINE AKRONITE DAKOTA MAPLE_PINE_PINE
+QCA_TEMPLATE_TARGETS += ALDER_PINE_PINE ALDER_WAIKIKI MAPLE_SPRUCE_PINE
 
 OS_TARGETS          += $(QCA_TEMPLATE_TARGETS)
 
@@ -16,6 +17,15 @@ ifneq ($(filter $(TARGET),$(QCA_TEMPLATE_TARGETS)),)
 VENDOR              := qca-template
 
 PLATFORM            := qca
+
+# By default, search through all service-provider directories
+# starting with "local"
+SERVICE_PROVIDERS ?= local ALL
+
+# Default image deployment profile which must be defined in one of the cloned
+# service-provider directories. The "local" profile is found in the "local"
+# service provider repository.
+export IMAGE_DEPLOYMENT_PROFILE ?= local
 
 VENDOR_DIR          := vendor/$(VENDOR)
 ARCH_MK             = $(VENDOR_DIR)/build/qsdk.mk

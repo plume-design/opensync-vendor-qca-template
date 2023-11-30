@@ -16,4 +16,5 @@ if [ ! -r /var/certs/ca.pem ] || \
 fi
 
 cp ${INSTALL_PREFIX}/certs/auth.pem /var/certs/.
+cp ${INSTALL_PREFIX}/certs/opensync_ca.pem /var/certs/.
 

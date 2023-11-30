@@ -2,8 +2,6 @@
 # Vendor specific Makefile
 #
 
-include $(VENDOR_DIR)/build/profile.mk
-
 ##
 # Enable vendor specific OVSDB hooks
 #

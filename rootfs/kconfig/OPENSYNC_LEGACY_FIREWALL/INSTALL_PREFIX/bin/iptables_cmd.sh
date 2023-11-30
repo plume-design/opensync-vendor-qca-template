@@ -1,13 +1,9 @@
 #!/bin/sh -e
-#
-# Firewall configuration helper
-#
-# Note that boot configuration is very permissive so it should be tightened
-# for production devices.
-#
+# {# jinja-parse #}
 
 UPNP_BIN="/usr/sbin/miniupnpd"
 UPNP_DIR="/tmp/miniupnpd"
+MANAGER_WANO_IFACE_LIST="{{ CONFIG_MANAGER_WANO_IFACE_LIST }}"
 
 log()
 {
@@ -22,48 +18,87 @@ to_syslog()
 iptables_boot()
 {
     log "Setting default IPv4 policies"
-
     # Set default policies
-    iptables -w -P INPUT ACCEPT
-    iptables -w -P FORWARD ACCEPT
-    iptables -w -P OUTPUT ACCEPT
+    iptables -P INPUT DROP
+    iptables -P FORWARD DROP
+    # OUTPUT should be gradually moved to the DROP policy as we tighten the
+    # security. For now leave them open, we don't want to lock pods out
+    iptables -P OUTPUT ACCEPT
+
 
     # Flush all other rules
-    iptables -w -F
-    iptables -w -X
-    iptables -w -t nat -F
-    iptables -w -t nat -X
-    iptables -w -t mangle -F
-    iptables -w -t mangle -X
+    iptables -F
+    iptables -X
+    iptables -t nat -F
+    iptables -t nat -X
+    iptables -t mangle -F
+    iptables -t mangle -X
 
     log "Installing permanent rules"
-    iptables -w -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
-    iptables -w -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
-    iptables -w -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+    iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+    iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 
     # Always enable the local interface
-    iptables -w -A INPUT -i lo -j ACCEPT
-    log "Enabling eth0.4 unconditionally"
-    iptables -w -A INPUT -i eth0.4 -j ACCEPT
+    iptables -A INPUT -i lo -j ACCEPT
+    log "Enabling management network interfaces '$MANAGER_WANO_IFACE_LIST' unconditionally"
+    for iface in $MANAGER_WANO_IFACE_LIST
+    do
+        iptables -A INPUT -i "${iface}.4" -j ACCEPT
+    done
 
-    log "Enabling ICMP protocol on all interfaces"
-    iptables -w -A INPUT -p icmp -j ACCEPT
+    # NM MSS clamping jump rule
+    iptables -t filter -N NM_MSS_CLAMP
+    iptables -t filter -A FORWARD -j NM_MSS_CLAMP
+
+    # NFM jump rules
+    log "Installing IPv4 NFM jump rules"
+    for CHAIN in INPUT OUTPUT FORWARD
+    do
+        iptables -t filter -N "NFM_$CHAIN"
+        iptables -t filter -A "$CHAIN" -j "NFM_$CHAIN"
+    done
+
+    for CHAIN in OUTPUT PREROUTING POSTROUTING
+    do
+        iptables -t nat -N "NFM_$CHAIN"
+        iptables -t nat -A "$CHAIN" -j "NFM_$CHAIN"
+    done
+
+    for CHAIN in INPUT OUTPUT FORWARD PREROUTING POSTROUTING
+    do
+        iptables -t mangle -N "NFM_$CHAIN"
+        iptables -t mangle -A "$CHAIN" -j "NFM_$CHAIN"
+    done
+
+    log "Enabling ICMP protocol on all interfaces, blocking timestamp request and reply"
+    iptables -A INPUT -p icmp --icmp-type timestamp-request -j DROP
+    iptables -A INPUT -p icmp -j ACCEPT
+    iptables -A OUTPUT -p icmp --icmp-type timestamp-reply -j DROP
 
     log "Adding NM wavering chains"
 
-    # NM allow input on interfaces
-    iptables -w -t filter -N NM_INPUT
-    iptables -w -t filter -A INPUT -j NM_INPUT
+    # NM filter chains
+    iptables -t filter -N NM_INPUT
+    iptables -t filter -A INPUT -j NM_INPUT
 
-    # NM enable NAT on interfaces
-    iptables -w -t nat -N NM_NAT
-    iptables -w -t nat -A POSTROUTING -j NM_NAT
-    iptables -w -t nat -N NM_PORT_FORWARD
-    iptables -w -t nat -A PREROUTING -j NM_PORT_FORWARD
+    # NM nat chains
+    iptables -t nat -N NM_NAT
+    iptables -t nat -A POSTROUTING -j NM_NAT
+
+    log "Allow IGMP"
+    iptables -A INPUT -p igmp -j ACCEPT
+    log "Allow Multicast"
+    iptables -A FORWARD -p udp -d 224.0.0.0/4 -j ACCEPT
+
+    # NM forwarding chains
+    iptables -t filter -N NM_FORWARD
+    iptables -t filter -A FORWARD -j NM_FORWARD
 
     log "Adding MINIUPNPD chains"
-    iptables -w -t filter -N MINIUPNPD
-    iptables -w -t nat -N MINIUPNPD
+    iptables -t filter -N MINIUPNPD
+    iptables -t nat -N MINIUPNPD
+
 }
 
 ip6tables_boot()
@@ -85,10 +120,38 @@ ip6tables_boot()
     ip6tables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
     ip6tables -A OUTPUT  -m state --state RELATED,ESTABLISHED -j ACCEPT
 
+    # NM MSS clamping jump rule
+    ip6tables -t filter -N NM_MSS_CLAMP
+    ip6tables -t filter -A FORWARD -j NM_MSS_CLAMP
+
+    # NFM jump rules
+    log "Installing IPv6 NFM jump rules"
+    for CHAIN in INPUT OUTPUT FORWARD
+    do
+        ip6tables -t filter -N "NFM_$CHAIN"
+        ip6tables -t filter -A "$CHAIN" -j "NFM_$CHAIN"
+    done
+
+    for CHAIN in OUTPUT PREROUTING POSTROUTING
+    do
+        ip6tables -t nat -N "NFM_$CHAIN"
+        ip6tables -t nat -A "$CHAIN" -j "NFM_$CHAIN"
+    done
+
+    for CHAIN in INPUT OUTPUT FORWARD PREROUTING POSTROUTING
+    do
+        ip6tables -t mangle -N "NFM_$CHAIN"
+        ip6tables -t mangle -A "$CHAIN" -j "NFM_$CHAIN"
+    done
+
+    log "Enabling ICMP protocol on all interfaces"
     # Always enable the local interface
     ip6tables -A INPUT -i lo -j ACCEPT
-    log "Enabling eth0.4 unconditionally"
-    ip6tables -A INPUT -i eth0.4 -j ACCEPT
+    log "Enabling management network interfaces '$MANAGER_WANO_IFACE_LIST' unconditionally"
+    for iface in $MANAGER_WANO_IFACE_LIST
+    do
+        ip6tables -A INPUT -i "${iface}.4" -j ACCEPT
+    done
 
     log "Enabling ICMPv6 protocol on all interfaces"
     ip6tables -A INPUT -p icmpv6 -j ACCEPT
@@ -102,7 +165,7 @@ ip6tables_boot()
     ip6tables -t filter -N NM_INPUT
     ip6tables -t filter -A INPUT -j NM_INPUT
 
-    # NM forwarding chain
+    # NM forwarding chains
     ip6tables -t filter -N NM_FORWARD
     ip6tables -t filter -A FORWARD -j NM_FORWARD
 
@@ -119,18 +182,19 @@ ip6tables_boot()
 iptables_flush()
 {
     # Flush out NM rules
-    log "Flushing NM rules: NM_NAT NM_PORT_FORWARD NM_INPUT"
+    log "Flushing NM rules: NM_NAT NM_FORWARD NM_PORT_FORWARD NM_INPUT NM_MSS_CLAMP"
     iptables  -t nat    -F NM_NAT
     iptables  -t nat    -F NM_PORT_FORWARD
-    iptables  -t filter -F NM_INPUT
-
+    iptables  -t filter -F NM_PORT_FORWARD
     ip6tables -t filter -F NM_INPUT
     ip6tables -t filter -F NM_FORWARD
+    iptables  -t filter -F NM_MSS_CLAMP
+    ip6tables -t filter -F NM_MSS_CLAMP
 
     # Stop miniupnpd daemon
     upnpd_stop
 
-    log "Flushing MINIUPNPD rules"
+    log "Flushing MINIUPNPND rules"
     iptables  -t filter -F MINIUPNPD
     ip6tables -t filter -F MINIUPNPD
     iptables  -t nat    -F MINIUPNPD
@@ -153,6 +217,8 @@ iptables_lan()
 
     # Accept all incoming packets
     iptables -A NM_INPUT -i "$ifname" -j ACCEPT
+    # Accept forwarded packets from local interfaces
+    iptables -A NM_FORWARD -i "$ifname" -j ACCEPT
 }
 
 ip6tables_lan()
@@ -190,6 +256,7 @@ iptables_nat()
 
     # Plant the miniupnpd rule for port forwarding via upnp
     iptables -t nat -A NM_PORT_FORWARD -i "$ifname" -j MINIUPNPD
+    iptables -t filter -A NM_PORT_FORWARD -i "$ifname" -j MINIUPNPD
 }
 
 iptables_forward()
@@ -276,7 +343,7 @@ upnpd_start()
     local int_if=$2     # Internal interface
 
     [ -z "$1" -o -z "$2" ] && {
-        log "UPnP requires 2 arguments."
+        log "UPnP requires 2 arguments"
         exit 1
     }
 
@@ -310,7 +377,6 @@ upnpd_start()
         exit 1
     }
 }
-
 
 case "$1" in
     "boot")
