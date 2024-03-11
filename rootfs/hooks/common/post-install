@@ -35,5 +35,15 @@ echo "###### post-install ${ROOTFS} #######"
 INSTALL_PREFIX_NO_LEADING_SLASH=`echo $INSTALL_PREFIX | sed 's/^\///'`
 ln -sf ${INSTALL_PREFIX_NO_LEADING_SLASH}/.version ${ROOTFS}/.version
 
-# Note that QSDK already takes care of /etc/rc.d.
-#ln -sf ../init.d/opensync ${ROOTFS}/etc/rc.d/S99opensync
+# QSDK/Openwrt already takes care of /etc/rc.d. However it
+# assumes the START= variable is 2-digit. This isn't
+# guaranteed so make sure to fix that up.
+if grep '^START=[0-9][0-9]$' "${ROOTFS}/etc/init.d/opensync"
+then
+    # Nothing to do. It's 2-digit, so QSDK/Openwrt scripts
+    # will take care of it.
+    true
+else
+    mkdir -p "${ROOTFS}/etc/rc.d/"
+    ln -sf ../init.d/opensync "${ROOTFS}/etc/rc.d/S99opensync"
+fi

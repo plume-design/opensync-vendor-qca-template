@@ -14,7 +14,3 @@ if [ ! -r /var/certs/ca.pem ] || \
     cp ${INSTALL_PREFIX}/certs/client.pem /var/certs/
     cp ${INSTALL_PREFIX}/certs/client_dec.key /var/certs/
 fi
-
-cp ${INSTALL_PREFIX}/certs/auth.pem /var/certs/.
-cp ${INSTALL_PREFIX}/certs/opensync_ca.pem /var/certs/.
-

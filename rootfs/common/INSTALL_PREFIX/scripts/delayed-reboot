@@ -1,9 +1,20 @@
 #!/bin/sh
 #
-# Delayed reboot helper script used by DM
+# $1 - reboot delay time
+# $2 - factory reset flag (true/false)
 #
 
-[ $# -ne 1 ] && exit 1
+[ $# -lt 1 ] && exit 1
+
+[ "$2" == "true" ] && {
+    # Factory reset
+    # Please add your HW factory reset method here.
+    logger -s -t OpenSync -p WARNING "Factory reset attempted using '$0'!"
+}
 
 /bin/sleep $1
+{% if CONFIG_OSP_REBOOT_CLI_OVERRIDE -%}
+/sbin/reboot -Rtype=cloud -Rreason=delayed-reboot
+{%- else -%}
 /sbin/reboot
+{%- endif %}

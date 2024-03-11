@@ -253,10 +253,6 @@ iptables_nat()
     echo "Enabling NAT on $ifname"
 
     iptables -t nat -A NM_NAT -o "$ifname" -j MASQUERADE
-
-    # Plant the miniupnpd rule for port forwarding via upnp
-    iptables -t nat -A NM_PORT_FORWARD -i "$ifname" -j MINIUPNPD
-    iptables -t filter -A NM_PORT_FORWARD -i "$ifname" -j MINIUPNPD
 }
 
 iptables_forward()
