@@ -27,9 +27,6 @@ endif
 ifeq ($(filter $(CONFIG_TARGET_ipq_ipq806x) $(CONFIG_TARGET_ipq_ipq806x_64), y),y)
 OPENSYNC_TARGET := AKRONITE
 endif
-ifeq ($(filter $(CONFIG_TARGET_ipq_ipq807x) $(CONFIG_TARGET_ipq_ipq807x_64), y),y)
-OPENSYNC_TARGET := HAWKEYE
-endif
 
 define Package/opensync
   SECTION    := net
@@ -87,9 +84,6 @@ define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)/vendor
 	unzip $(DL_DIR)/opensync-vendor-osync_$(OPENSYNC_VERSION).zip -d $(PKG_BUILD_DIR)/vendor
 	mv $(PKG_BUILD_DIR)/vendor/opensync-vendor-qca-template-osync_$(OPENSYNC_VERSION) $(PKG_BUILD_DIR)/vendor/qca-template
-
-	mkdir -p $(PKG_BUILD_DIR)/vendor/qca-template/rootfs/target/HAWKEYE/INSTALL_PREFIX/certs
-	$$(INSTALL_BIN) ./files/* $(PKG_BUILD_DIR)/vendor/qca-template/rootfs/target/HAWKEYE/INSTALL_PREFIX/certs
 
 	$(Build/Prepare/Default)
 endef

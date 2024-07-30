@@ -16,6 +16,7 @@
 #include "schema.h"
 #include "util.h"
 #include "target.h"
+#include "os_util.h"
 
 #include "dm_reboot_trigger.h"
 
@@ -33,8 +34,15 @@ static ovsdb_table_t table_Wifi_Test_State;
 static bool cmd_delayed_reboot(const char *delay)
 {
     char cmd[512];
+    long delay_val;
 
-    snprintf(cmd, sizeof(cmd), CONFIG_INSTALL_PREFIX"/scripts/delayed-reboot %s", delay);
+    if (!os_strtoul((char *)delay, &delay_val, 0))
+    {
+        LOGE("Invalid delay value: %s", delay);
+        return false;
+    }
+
+    snprintf(cmd, sizeof(cmd), CONFIG_INSTALL_PREFIX"/scripts/delayed-reboot %ld", delay_val);
 
     if (fork() == 0)
     {

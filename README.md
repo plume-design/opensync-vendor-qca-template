@@ -6,9 +6,6 @@ QCA based targets.
 
 This vendor layer provides example target implementations for the following
 reference boards:
-* `HAWKEYE` - gateway and extender mode (QCA reference board)
-* `HAWKEYE_RDP419` - gateway and extender mode (QCA reference board with Pine chipset)
-* `HAWKEYE_PINE` - gateway and extender mode (QCA reference board with Pine chipset)
 * `AKRONITE` - gateway and extender mode (QCA reference board)
 * `DAKOTA` - gateway and extender mode (QCA reference board)
 * `MAPLE_PINE_PINE` - gateway and extender mode (QCA reference board)
@@ -22,9 +19,9 @@ reference boards:
 
     | Component                    | Version     |         |
     |------------------------------|-------------|---------|
-    | OpenSync core                | 6.2.x       | public  |
-    | OpenSync vendor/qca-template | 6.2.x       | public  |
-    | OpenSync platform/qca        | 6.2.x       | public  |
+    | OpenSync core                | 6.4.x       | public  |
+    | OpenSync vendor/qca-template | 6.4.x       | public  |
+    | OpenSync platform/qca        | 6.4.x       | public  |
     | Qualcomm SDK                 | 11.x        | private |
 
 #### Reference board information
@@ -206,8 +203,6 @@ $ make menuconfig
           ( ) Dakota
           ( ) Maple Pine Pine
           ( ) Akronite
-          ( ) Hawkeye
-          ( ) Hawkeye Pine
           ...
 
 $ make

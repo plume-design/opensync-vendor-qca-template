@@ -27,6 +27,7 @@ endif
 SDK_INCLUDES  += -I$(TOOLCHAIN_DIR)/include
 SDK_INCLUDES  += -I$(TOOLCHAIN_DIR)/usr/include
 
+SDK_DIR        = $(TOPDIR)
 SDK_LIB_DIR   += -L$(STAGING_DIR)/lib
 
 SDK_CFLAGS    += -Os -pipe -fno-caller-saves -fhonour-copts
@@ -40,20 +41,23 @@ SDK_CFLAGS    += -DMONT_NO_RFMON_MODE -DMONT_LINUX
 SDK_CFLAGS    += -DQCA_10_4
 SDK_CFLAGS    += -Wno-clobbered
 
-CFLAGS        += $(SDK_CFLAGS) $(SDK_INCLUDES)
+OS_CFLAGS     += $(SDK_CFLAGS) $(SDK_INCLUDES)
 LIBS          += $(SDK_LIB_DIR)
 
-CFLAGS        += -Wno-error=cpp
+OS_CFLAGS     += -Wno-error=cpp
+
+SDK_MKSQUASHFS_CMD = $(STAGING_DIR)/../host/bin/mksquashfs4
+SDK_MKSQUASHFS_ARGS = -noappend -root-owned -comp xz -Xbcj arm -b 256k
 
 export STAGING_DIR
 export CC
 export CXX
-export CFLAGS
+export OS_CFLAGS
 export LIBS
 
 WRT_DEFINES      += -DUSE_IOCTL_DEV
 # Needed for offloading stats
-ifneq ($(filter HAWKEYE HAWKEYE_RDP419 HAWKEYE_PINE AKRONITE DAKOTA MAPLE_PINE_PINE ALDER_PINE_PINE MAPLE_SPRUCE_PINE,$(TARGET)),)
+ifneq ($(filter AKRONITE DAKOTA MAPLE_PINE_PINE ALDER_PINE_PINE MAPLE_SPRUCE_PINE,$(TARGET)),)
 QCA_WIFI_VARIANT = unified-profile
 QCA_WIFI_SRC_DIR = $(SDK_DIR)/qca/src/qca-wifi
 QCA_WIFI_REV = $(shell cd $(QCA_WIFI_SRC_DIR) && git describe --dirty --long --always | sed 's/.*-g//g')

@@ -4,7 +4,7 @@
 # NOTE: A single vendor repository may contain multiple targets,
 # which share some portions of code.
 #
-QCA_TEMPLATE_TARGETS := HAWKEYE HAWKEYE_RDP419 HAWKEYE_PINE AKRONITE DAKOTA MAPLE_PINE_PINE
+QCA_TEMPLATE_TARGETS := AKRONITE DAKOTA MAPLE_PINE_PINE
 QCA_TEMPLATE_TARGETS += ALDER_PINE_PINE ALDER_WAIKIKI MAPLE_SPRUCE_PINE
 
 OS_TARGETS          += $(QCA_TEMPLATE_TARGETS)
@@ -33,27 +33,6 @@ KCONFIG_TARGET      ?= $(VENDOR_DIR)/kconfig/targets/$(TARGET)
 
 
 # TARGET specific settings
-
-ifneq ($(filter HAWKEYE,$(TARGET)),)
-VERSION_TARGET                  = HAWKEYE
-CPU_TYPE                        = arm
-DRIVER_VERSION                  = qca10_2_4_csu3
-SDK                             = .
-endif
-
-ifneq ($(filter HAWKEYE_RDP419,$(TARGET)),)
-VERSION_TARGET                  = HAWKEYE_RDP419
-CPU_TYPE                        = arm
-DRIVER_VERSION                  = qca10_2_4_csu3
-SDK                             = .
-endif
-
-ifneq ($(filter HAWKEYE_PINE,$(TARGET)),)
-VERSION_TARGET                  = HAWKEYE_PINE
-CPU_TYPE                        = arm
-DRIVER_VERSION                  = qca10_2_4_csu3
-SDK                             = .
-endif
 
 ifneq ($(filter AKRONITE,$(TARGET)),)
 VERSION_TARGET                  = AKRONITE
