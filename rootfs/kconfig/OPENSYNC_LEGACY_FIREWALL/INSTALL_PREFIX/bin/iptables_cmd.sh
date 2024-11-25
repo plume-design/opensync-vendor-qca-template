@@ -154,6 +154,8 @@ ip6tables_boot()
     done
 
     log "Enabling ICMPv6 protocol on all interfaces"
+    ip6tables -A INPUT -p icmpv6 --icmpv6-type router-advertisement -m limit --limit 20/min --limit-burst 5 -j ACCEPT
+    ip6tables -A INPUT -p icmpv6 --icmpv6-type router-advertisement -j DROP
     ip6tables -A INPUT -p icmpv6 -j ACCEPT
 
     log "Enabling DHCPv6 protocol on all interfaces"
