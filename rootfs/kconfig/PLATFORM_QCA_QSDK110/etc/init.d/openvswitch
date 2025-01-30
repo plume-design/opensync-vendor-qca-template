@@ -47,25 +47,10 @@ start()
 
     ln -sf /var/run/ovsdb-server.pid $OVSDB_RUN_DIR/ovsdb-server.pid
     ln -sf /var/run/db.sock $OVSDB_RUN_DIR/db.sock
-
-    # ovs-vswitchd
-{%- if CONFIG_TARGET_USE_NATIVE_BRIDGE %}
-    logger "$0: Not Starting openvswitch in native bridge mode ..."
-{%- else %}
-    service_start /usr/sbin/ovs-vswitchd --pidfile=/var/run/ovs-vswitchd.pid
-
-    ln -sf /var/run/ovs-vswitchd.pid $OVSDB_RUN_DIR/ovs-vswitchd.pid
-{%- endif %}
 }
 
 stop()
 {
     # ovsdb-server
     service_stop /usr/sbin/ovsdb-server
-
-{% if not CONFIG_TARGET_USE_NATIVE_BRIDGE %}
-    logger "$0: Stopping openvswitch ..."
-    # ovs-vswitchd
-    service_stop /usr/sbin/ovs-vswitchd
-{%- endif %}
 }

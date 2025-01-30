@@ -4,7 +4,6 @@
 # TOOLCHAIN_DIR and TARGET_CROSS variables are passed in
 # as arguments from package/opensync Makefile
 #
-OVS_PACKAGE_VER := $(shell sed -n '/^PKG_VERSION/{s/^.*=//p;q}' $(TOPDIR)/qca/feeds/packages/net/openvswitch/Makefile)
 
 # add toolchain to the path
 PATH           := $(PATH):$(TOOLCHAIN_DIR)/bin
@@ -17,10 +16,7 @@ STRIP          = $(TARGET_CROSS)strip -g
 TARGET_DIR     = $(STAGING_DIR)
 LIB_DIR        = $(STAGING_DIR)/lib
 
-SDK_INCLUDES  += -I$(TARGET_DIR)/include
 SDK_INCLUDES  += -I$(TARGET_DIR)/usr/include
-SDK_INCLUDES  += -I$(TARGET_DIR)/usr/include/protobuf-c
-SDK_INCLUDES  += -I$(TARGET_DIR)/usr/include/openvswitch
 ifeq ($(CONFIG_PLATFORM_QCA_QSDK110),y)
 SDK_INCLUDES  += -I$(TARGET_DIR)/usr/include/libnl3
 endif

@@ -1,4 +1,5 @@
 #!/bin/sh
+# {# jinja-parse #}
 #
 # $1 - reboot delay time
 # $2 - factory reset flag (true/false)

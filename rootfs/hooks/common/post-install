@@ -47,3 +47,5 @@ else
     mkdir -p "${ROOTFS}/etc/rc.d/"
     ln -sf ../init.d/opensync "${ROOTFS}/etc/rc.d/S99opensync"
 fi
+
+ln -sf ../init.d/healthcheck "${ROOTFS}/etc/rc.d/S99healthcheck"

@@ -31,16 +31,10 @@ start()
         --ca-cert=db:Open_vSwitch,SSL,ca_cert \
         --pidfile=/var/run/ovsdb-server.pid \
         /tmp/etc/openvswitch/conf.db
-
-    # ovs-vswitchd
-    service_start /usr/sbin/ovs-vswitchd --pidfile=/var/run/ovs-vswitchd.pid
 }
 
 stop()
 {
     # ovsdb-server
     service_stop /usr/sbin/ovsdb-server
-
-    # ovs-vswitchd
-    service_stop /usr/sbin/ovs-vswitchd
 }
