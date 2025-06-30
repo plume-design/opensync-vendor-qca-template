@@ -1,13 +1,6 @@
 #ifndef TARGET_MIAMI_PEBBLE_H_INCLUDED
 #define TARGET_MIAMI_PEBBLE_H_INCLUDED
 
-#include "ioctl80211_client.h"
-#include "ioctl80211_survey.h"
-#include "ioctl80211_scan.h"
-#include "ioctl80211_device.h"
-#include "ioctl80211_capacity.h"
-#include "ioctl80211_radio.h"
-
 #define TARGET_ETHCLIENT_IFLIST "eth0", "eth1"
 
 #define TARGET_CERT_PATH         "/var/certs"

@@ -31,18 +31,13 @@ static ovsdb_table_t table_Wifi_Test_State;
  * Private
  */
 
-static bool cmd_delayed_reboot(const char *delay)
+static bool cmd_delayed_reboot(const char *args)
 {
     char cmd[512];
-    long delay_val;
 
-    if (!os_strtoul((char *)delay, &delay_val, 0))
-    {
-        LOGE("Invalid delay value: %s", delay);
-        return false;
-    }
+    if (!is_input_shell_safe(args)) return false;
 
-    snprintf(cmd, sizeof(cmd), CONFIG_INSTALL_PREFIX"/scripts/delayed-reboot %ld", delay_val);
+    snprintf(cmd, sizeof(cmd), CONFIG_INSTALL_PREFIX"/scripts/delayed-reboot %s", args);
 
     if (fork() == 0)
     {
@@ -64,11 +59,11 @@ static void callback_Wifi_Test_Config(
     if (mon->mon_type == OVSDB_UPDATE_NEW &&
         strcmp("reboot", tconfig->test_id) == 0)
     {
-        const char *delay = SCHEMA_KEY_VAL(tconfig->params, "arg");
+        const char *args = SCHEMA_KEY_VAL(tconfig->params, "arg");
 
-        LOGI("Reboot requested! :: delay=%s", delay);
+        LOGI("Reboot requested! :: args=%s", args);
 
-        if (delay && cmd_delayed_reboot(delay))
+        if (args && cmd_delayed_reboot(args))
         {
             memset(&tstate, 0, sizeof(tstate));
             SCHEMA_SET_STR(tstate.test_id,  "reboot");

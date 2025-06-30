@@ -178,7 +178,6 @@ in the `.config` file. To configure the OpenSync package, run:
 
 ```
 $ echo "CONFIG_PACKAGE_opensync=y" >>.config
-$ echo "CONFIG_OPENSYNC_NL_SUPPORT=y" >>.config
 $ echo "CONFIG_<TARGET_NAME>=y" >>.config
 
 $ make defconfig
@@ -186,7 +185,6 @@ $ make
 ```
 
 Specify a valid target and provide the onboard SSID and password.
-Note that CONFIG_OPENSYNC_NL_SUPPORT must be enabled.
 
 
 Alternatively, configuration can be performed using interactive `menuconfig`:
@@ -301,7 +299,7 @@ Non-OpenSync service startup scripts:
 ./rootfs/common/etc/init.d/syslog
 ./rootfs/common/etc/init.d/dropbear
 ./rootfs/common/etc/init.d/watchdog
-./rootfs/common/etc/init.d/firewall
+./rootfs/common/etc/init.d/os_firewall
 ./rootfs/common/etc/init.d/debugnet
 ```
 

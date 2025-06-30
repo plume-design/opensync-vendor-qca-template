@@ -23,7 +23,7 @@ echo "###### post-install ${ROOTFS} #######"
 #ln -sf ../init.d/htpdate ${ROOTFS}/etc/rc.d/S49htpdate
 #ln -sf ../init.d/debugnet ${ROOTFS}/etc/rc.d/S50debugnet
 #ln -sf ../init.d/dropbear ${ROOTFS}/etc/rc.d/S51dropbear
-#ln -sf ../init.d/firewall ${ROOTFS}/etc/rc.d/S60firewall
+#ln -sf ../init.d/os_firewall ${ROOTFS}/etc/rc.d/S60os_firewall
 #ln -sf ../init.d/fan ${ROOTFS}/etc/rc.d/S60fan
 #ln -sf ../init.d/bcreset ${ROOTFS}/etc/rc.d/S99bcreset
 
@@ -38,14 +38,22 @@ ln -sf ${INSTALL_PREFIX_NO_LEADING_SLASH}/.version ${ROOTFS}/.version
 # QSDK/Openwrt already takes care of /etc/rc.d. However it
 # assumes the START= variable is 2-digit. This isn't
 # guaranteed so make sure to fix that up.
-if grep '^START=[0-9][0-9]$' "${ROOTFS}/etc/init.d/opensync"
+if [ "$CONFIG_RUN_IN_LXC" = "y" ]; then
+    sed -i 's/^START=/#START=/' "${ROOTFS}/etc/init.d/opensync"
+    rm -f "${ROOTFS}/etc/rc.d/S??opensync"
+    OPENSYNC_SERVICE=lxc_opensync
+else
+    OPENSYNC_SERVICE=opensync
+fi
+
+if grep '^START=[0-9][0-9]$' "${ROOTFS}/etc/init.d/${OPENSYNC_SERVICE}"
 then
     # Nothing to do. It's 2-digit, so QSDK/Openwrt scripts
     # will take care of it.
     true
 else
     mkdir -p "${ROOTFS}/etc/rc.d/"
-    ln -sf ../init.d/opensync "${ROOTFS}/etc/rc.d/S99opensync"
+    ln -sf ../init.d/${OPENSYNC_SERVICE} "${ROOTFS}/etc/rc.d/S99${OPENSYNC_SERVICE}"
 fi
 
 ln -sf ../init.d/healthcheck "${ROOTFS}/etc/rc.d/S99healthcheck"
