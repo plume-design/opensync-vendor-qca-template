@@ -36,7 +36,7 @@ Healthcheck_Fatal()
     sleep 5 # Give logpull a chance to collect logs
     {% if CONFIG_OSP_REBOOT_CLI_OVERRIDE == 'y' -%}
     fatal_reason="Healthcheck failed."
-    [ ! -z $1 ] && fatal_reason="$fatal_reason Last failed script $1"
+    [ ! -z $1 ] && fatal_reason="$fatal_reason Last failed script $1 $2"
     /sbin/reboot -Rtype=healthcheck -Rreason="$fatal_reason"
     {%- else -%}
     /sbin/reboot
