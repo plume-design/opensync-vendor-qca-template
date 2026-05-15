@@ -27,9 +27,13 @@ SDK_DIR        = $(TOPDIR)
 SDK_LIB_DIR   += -L$(STAGING_DIR)/lib
 
 SDK_CFLAGS    += -Os -pipe -fno-caller-saves -fhonour-copts
-SDK_CFLAGS    += -Wno-error=unused-but-set-variable
+SDK_CFLAGS    += -g3 -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wno-error=return-type -Wno-error=int-conversion -Wno-error=implicit-function-declaration
 ifneq ($(ARCH_64BIT),y)
+ifeq ($(CONFIG_PLATFORM_QCA_QSDK130),y)
+SDK_CFLAGS    += -mfloat-abi=hard
+else
 SDK_CFLAGS    += -msoft-float
+endif
 endif
 SDK_CFLAGS    += -fasynchronous-unwind-tables -rdynamic -fno-omit-frame-pointer
 SDK_CFLAGS    += -DINET6 -D_U_="__attribute__((unused))"
